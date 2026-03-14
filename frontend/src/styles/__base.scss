@@ -1,0 +1,31 @@
+@use './__variables' as v;
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Jost:wght@300;400;500&display=swap');
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: v.$bg;
+  color: v.$text;
+  font-family: v.$font-body;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: v.$gold;
+  text-decoration: none;
+  transition: color 0.2s;
+
+  &:hover { color: v.$gold-light; }
+}
+
+h1, h2, h3, h4 {
+  font-family: v.$font-display;
+  font-weight: 300;
+  color: v.$text;
+}

@@ -1,0 +1,5 @@
+@use './__variables' as v;
+
+@mixin sm { @media (max-width: #{v.$bp-sm}) { @content; } }
+@mixin md { @media (max-width: #{v.$bp-md}) { @content; } }
+@mixin lg { @media (max-width: #{v.$bp-lg}) { @content; } }

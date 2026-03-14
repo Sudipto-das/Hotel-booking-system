@@ -1,0 +1,296 @@
+@use 'sass:color';
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Jost:wght@300;400;500&display=swap');
+
+// ── Variables ──────────────────────────────────────────
+$bg:          #0e0e0f;
+$surface:     #161618;
+$border:      #2a2a2e;
+$gold:        #c9a84c;
+$gold-light:  #e2c97e;
+$text:        #f0ede8;
+$muted:       #6e6e78;
+$input-bg:    #1c1c1f;
+
+// ── Breakpoints ────────────────────────────────────────
+$bp-sm:  480px;
+$bp-md:  768px;
+$bp-lg:  1024px;
+
+@mixin sm { @media (max-width: #{$bp-sm}) { @content; } }
+@mixin md { @media (max-width: #{$bp-md}) { @content; } }
+@mixin lg { @media (max-width: #{$bp-lg}) { @content; } }
+
+// ── Reset / Base ───────────────────────────────────────
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+// ── Page ───────────────────────────────────────────────
+.register-page {
+  min-height: 100vh;
+  min-height: 100dvh; // dynamic viewport for mobile browsers
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $bg;
+  background-image:
+    radial-gradient(ellipse 80% 60% at 50% -10%, rgba(201, 168, 76, 0.08) 0%, transparent 70%);
+  padding: 2rem;
+  font-family: 'Jost', sans-serif;
+
+  @include md {
+    padding: 1.5rem;
+    align-items: flex-start;
+    padding-top: 3rem;
+  }
+
+  @include sm {
+    padding: 0;
+    align-items: stretch;
+  }
+}
+
+// ── Card ───────────────────────────────────────────────
+.register-card {
+  width: 100%;
+  max-width: 420px;
+  background: $surface;
+  border: 1px solid $border;
+  border-radius: 4px;
+  padding: 3rem 2.5rem;
+  box-shadow:
+    0 0 0 1px rgba(201, 168, 76, 0.06),
+    0 32px 64px rgba(0, 0, 0, 0.5);
+  animation: fadeUp 0.5s ease both;
+
+  @include md {
+    max-width: 100%;
+    padding: 2.5rem 2rem;
+  }
+
+  @include sm {
+    max-width: 100%;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    padding: 2.5rem 1.5rem;
+    box-shadow: none;
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  &__header {
+    margin-bottom: 2.5rem;
+    text-align: center;
+
+    @include sm {
+      margin-bottom: 2rem;
+    }
+  }
+
+  &__tag {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: $gold;
+    border: 1px solid rgba($gold, 0.35);
+    padding: 0.25rem 0.85rem;
+    border-radius: 2px;
+    margin-bottom: 1.2rem;
+  }
+
+  &__title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.4rem;
+    font-weight: 300;
+    color: $text;
+    letter-spacing: 0.02em;
+    margin: 0 0 0.5rem;
+    line-height: 1.1;
+
+    @include md {
+      font-size: 2.1rem;
+    }
+
+    @include sm {
+      font-size: 1.9rem;
+    }
+  }
+
+  &__subtitle {
+    font-size: 0.82rem;
+    color: $muted;
+    font-weight: 300;
+    letter-spacing: 0.04em;
+    margin: 0;
+  }
+
+  &__footer {
+    margin-top: 1.75rem;
+    text-align: center;
+    font-size: 0.8rem;
+    color: $muted;
+
+    @include sm {
+      margin-top: 1.5rem;
+      font-size: 0.85rem; // slightly larger for touch readability
+    }
+
+    a {
+      color: $gold;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s;
+
+      // larger tap target on mobile
+      @include sm {
+        display: inline-block;
+        padding: 0.25rem 0;
+      }
+
+      &:hover {
+        color: $gold-light;
+      }
+    }
+  }
+}
+
+// ── Form ───────────────────────────────────────────────
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+
+  @include sm {
+    gap: 1rem;
+  }
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+
+  label {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: $muted;
+    transition: color 0.2s;
+  }
+
+  input {
+    background: $input-bg;
+    border: 1px solid $border;
+    border-radius: 3px;
+    padding: 0.75rem 1rem;
+    color: $text;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 300;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    width: 100%;
+
+    // prevents iOS zoom on focus (font-size must be >= 16px on mobile)
+    @include sm {
+      font-size: 1rem;
+      padding: 0.85rem 1rem;
+    }
+
+    &::placeholder {
+      color: color.scale($muted, $lightness: -22%);
+      font-weight: 300;
+    }
+
+    &:focus {
+      border-color: rgba($gold, 0.6);
+      box-shadow: 0 0 0 3px rgba($gold, 0.08);
+    }
+  }
+
+  &:focus-within label {
+    color: $gold;
+  }
+}
+
+// ── Button ─────────────────────────────────────────────
+.register-btn {
+  margin-top: 0.5rem;
+  width: 100%;
+  padding: 0.85rem;
+  background: $gold;
+  color: #0e0e0f;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  // ensures proper tap target height on mobile (min 44px)
+  min-height: 44px;
+
+  @include sm {
+    margin-top: 0.75rem;
+    padding: 1rem;
+    font-size: 0.82rem;
+  }
+
+  &:hover {
+    background: $gold-light;
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  // disable hover transform on touch devices
+  @media (hover: none) {
+    &:hover {
+      transform: none;
+    }
+    &:active {
+      background: $gold-light;
+    }
+  }
+}
+
+// ── Animation ──────────────────────────────────────────
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// ── Reduced motion ─────────────────────────────────────
+@media (prefers-reduced-motion: reduce) {
+  .register-card {
+    animation: none;
+  }
+
+  .register-btn,
+  .form-group input,
+  .form-group label {
+    transition: none;
+  }
+}

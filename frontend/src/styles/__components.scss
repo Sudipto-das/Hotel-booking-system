@@ -1,0 +1,184 @@
+@use './__variables' as v;
+@use './__mixins' as m;
+
+// ── Auth page layout (Register, Login share this) ──────
+.auth-page {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: v.$bg;
+  background-image: radial-gradient(
+    ellipse 80% 60% at 50% -10%,
+    rgba(201, 168, 76, 0.08) 0%,
+    transparent 70%
+  );
+  padding: 2rem;
+
+  @include m.md { padding: 1.5rem; align-items: flex-start; padding-top: 3rem; }
+  @include m.sm { padding: 0; align-items: stretch; }
+}
+
+// ── Auth card (shared) ─────────────────────────────────
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+  background: v.$surface;
+  border: 1px solid v.$border;
+  border-radius: 4px;
+  padding: 3rem 2.5rem;
+  box-shadow:
+    0 0 0 1px rgba(201, 168, 76, 0.06),
+    0 32px 64px rgba(0, 0, 0, 0.5);
+  animation: fadeUp 0.5s ease both;
+
+  @include m.md { max-width: 100%; padding: 2.5rem 2rem; }
+  @include m.sm {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    padding: 2.5rem 1.5rem;
+    box-shadow: none;
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  &__header {
+    margin-bottom: 2.5rem;
+    text-align: center;
+    @include m.sm { margin-bottom: 2rem; }
+  }
+
+  &__tag {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: v.$gold;
+    border: 1px solid rgba(v.$gold, 0.35);
+    padding: 0.25rem 0.85rem;
+    border-radius: 2px;
+    margin-bottom: 1.2rem;
+  }
+
+  &__title {
+    font-family: v.$font-display;
+    font-size: 2.4rem;
+    font-weight: 300;
+    color: v.$text;
+    letter-spacing: 0.02em;
+    margin: 0 0 0.5rem;
+    line-height: 1.1;
+
+    @include m.md { font-size: 2.1rem; }
+    @include m.sm { font-size: 1.9rem; }
+  }
+
+  &__subtitle {
+    font-size: 0.82rem;
+    color: v.$muted;
+    font-weight: 300;
+    letter-spacing: 0.04em;
+  }
+
+  &__footer {
+    margin-top: 1.75rem;
+    text-align: center;
+    font-size: 0.8rem;
+    color: v.$muted;
+
+    @include m.sm { margin-top: 1.5rem; font-size: 0.85rem; }
+
+    a {
+      @include m.sm { display: inline-block; padding: 0.25rem 0; }
+    }
+  }
+}
+
+// ── Form ───────────────────────────────────────────────
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+
+  @include m.sm { gap: 1rem; }
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+
+  label {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: v.$muted;
+    transition: color 0.2s;
+  }
+
+  input {
+    background: v.$input-bg;
+    border: 1px solid v.$border;
+    border-radius: 3px;
+    padding: 0.75rem 1rem;
+    color: v.$text;
+    font-family: v.$font-body;
+    font-size: 0.9rem;
+    font-weight: 300;
+    outline: none;
+    width: 100%;
+    transition: border-color 0.2s, box-shadow 0.2s;
+
+    @include m.sm { font-size: 1rem; padding: 0.85rem 1rem; }
+
+    &::placeholder { color: v.$muted; font-weight: 300; }
+
+    &:focus {
+      border-color: rgba(v.$gold, 0.6);
+      box-shadow: 0 0 0 3px rgba(v.$gold, 0.08);
+    }
+  }
+
+  &:focus-within label { color: v.$gold; }
+}
+
+// ── Button ─────────────────────────────────────────────
+.btn-primary {
+  width: 100%;
+  padding: 0.85rem;
+  min-height: 44px;
+  background: v.$gold;
+  color: v.$bg;
+  font-family: v.$font-body;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+
+  @include m.sm { padding: 1rem; font-size: 0.82rem; }
+
+  &:hover { background: v.$gold-light; transform: translateY(-1px); }
+  &:active { transform: translateY(0); }
+
+  @media (hover: none) {
+    &:hover { transform: none; }
+    &:active { background: v.$gold-light; }
+  }
+}
+
+// ── Reduced motion ─────────────────────────────────────
+@media (prefers-reduced-motion: reduce) {
+  .auth-card { animation: none; }
+  .btn-primary, .form-group input, .form-group label { transition: none; }
+}
