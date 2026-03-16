@@ -1,5 +1,5 @@
-import { useState, createContext, Children } from "react";
-import { login, register } from "./services/auth.services";
+import { useState, createContext, Children, useEffect } from "react";
+import { login, register, profile } from "./services/auth.services";
 
 
 export const AuthContext = createContext()
@@ -8,6 +8,7 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    
 
     const handleLogin = async (email, password) => {
         setLoading(true);
@@ -36,8 +37,26 @@ export const AuthProvider = ({ children }) => {
         }
     }
 
+
+    const checkAuth = async() =>{
+        setLoading(true);
+        try{
+            const userData = await profile();
+            setUser(userData);
+        } catch(err){
+            setUser(null);
+        } finally{
+            setLoading(false);
+        }
+        
+    }
+
+    useEffect(() =>{
+        checkAuth()
+    },[]);
+
     return (
-        <AuthContext.Provider value={{ user, loading, error, handleLogin, handleRegister }}>
+        <AuthContext.Provider value={{ user, loading, error, handleLogin, handleRegister, }}>
             {children}
         </AuthContext.Provider>
     );

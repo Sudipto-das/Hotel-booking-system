@@ -54,7 +54,7 @@ const Register = () => {
           </div>
           <button type="submit" className="btn-primary">{loading ? "Registering..." : "Register"}</button>
         </form>
-        <p className="auth-card__footer">Already have an account? <a href="/login">Sign in</a></p>
+        <p className="auth-card__footer">Already have an account? <a href="/">Sign in</a></p>
       </div>
     </main>
   )

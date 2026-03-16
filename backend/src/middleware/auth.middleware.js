@@ -6,16 +6,20 @@ const jwt = require("jsonwebtoken");
  * @usage Add to any protected route
  */
 const authMiddleware = (req, res, next) => {
+  
   try {
     // 1. Get token from header
-    const authHeader = req.headers.authorization;
+    // const authHeader = req.headers.authorization;
+    // 2. Extract token (removes "Bearer " prefix)
+    // const token = authHeader.split(" ")[1];
 
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    const token = req.cookies.token
+
+    if (!token) {
       return res.status(401).json({ message: "No token, authorization denied" });
     }
 
-    // 2. Extract token (removes "Bearer " prefix)
-    const token = authHeader.split(" ")[1];
+
 
     // 3. Verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
