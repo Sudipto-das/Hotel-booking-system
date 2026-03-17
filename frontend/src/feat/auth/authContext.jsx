@@ -1,4 +1,4 @@
-import { useState, createContext, Children, useEffect } from "react";
+import { useState, createContext, useEffect } from "react";
 import { login, register, profile } from "./services/auth.services";
 
 
@@ -55,8 +55,13 @@ export const AuthProvider = ({ children }) => {
         checkAuth()
     },[]);
 
+    const logout = () => {
+        setUser(null);
+        setError(null);
+    }
+
     return (
-        <AuthContext.Provider value={{ user, loading, error, handleLogin, handleRegister, }}>
+        <AuthContext.Provider value={{ user, loading, error, handleLogin, handleRegister, logout }}>
             {children}
         </AuthContext.Provider>
     );

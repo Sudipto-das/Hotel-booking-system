@@ -8,7 +8,7 @@ const PublicRoute = ({ children }) => {
     if (loading) {
         return <div>Loading...</div>;
     }
-    return !user ? children : <Navigate to="/create-room" replace />;
+    return !user ? children : <Navigate to="/dashboard" replace />;
 }
 
 export default PublicRoute;

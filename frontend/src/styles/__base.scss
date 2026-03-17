@@ -29,3 +29,41 @@ h1, h2, h3, h4 {
   font-weight: 300;
   color: v.$text;
 }
+
+// ── App Layout ──────────────────────────────────────────────────────────────────
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+  margin-left: v.$sidebar-expanded;
+  padding: 2rem;
+  transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background-color: v.$bg;
+  min-height: 100vh;
+  width: calc(100% - v.$sidebar-expanded);
+}
+
+// Sidebar collapsed state
+.app-layout.sidebar-collapsed .main-content {
+  margin-left: v.$sidebar-collapsed;
+  width: calc(100% - v.$sidebar-collapsed);
+}
+
+// ── Page Content ───────────────────────────────────────────────────────────────
+.page-content {
+  padding: 1rem;
+
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: v.$text;
+  }
+
+  p {
+    color: v.$muted;
+    font-size: 1rem;
+  }
+}

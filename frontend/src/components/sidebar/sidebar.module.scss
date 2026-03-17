@@ -1,0 +1,695 @@
+@use '../../styles/__variables' as v;
+@use '../../styles/__mixins' as m;
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// ── Sidebar Module
+// ═══════════════════════════════════════════════════════════════════════════════
+// A self-contained sidebar component with BEM naming conventions.
+// Uses camelCase for CSS Module compatibility.
+// Includes: Layout, Typography, States, Responsive Design, Animations.
+// ═══════════════════════════════════════════════════════════════════════════════
+
+
+// ── CSS Custom Properties (Theming) ───────────────────────────────────────────
+:root {
+  --sidebar-bg: #{v.$sidebar-bg};
+  --sidebar-bg-hover: #{v.$sidebar-bg-hover};
+  --sidebar-border: #{v.$sidebar-border};
+  --sidebar-gold-dim: #{v.$gold-dim};
+  --sidebar-width-expanded: #{v.$sidebar-expanded};
+  --sidebar-width-collapsed: #{v.$sidebar-collapsed};
+  --sidebar-transition: #{v.$sidebar-transition};
+}
+
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// ── 1. Layout / Shell
+// ═══════════════════════════════════════════════════════════════════════════════
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: v.$sidebar-expanded;
+  background: v.$sidebar-bg;
+  border-right: 1px solid v.$sidebar-border;
+  display: flex;
+  flex-direction: column;
+  // ── FIX: removed justify-content/align-items from root —
+  //    those belong only in collapsed children, not the shell itself.
+  overflow: hidden;
+  transition: width 0.3s v.$sidebar-transition;
+  z-index: 100;
+
+  // Subtle top-edge gold glow
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, v.$gold, transparent);
+    opacity: 0.6;
+  }
+}
+
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// ── 2. Header / Logo Section
+// ═══════════════════════════════════════════════════════════════════════════════
+
+.sidebar__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 14px;
+  height: 68px;
+  border-bottom: 1px solid v.$sidebar-border;
+  flex-shrink: 0;
+  // ── FIX: ensure header never shrinks below its declared height
+  min-height: 68px;
+}
+
+.sidebar__logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  flex: 1;
+  transition: padding 0.3s v.$sidebar-transition, justify-content 0.3s v.$sidebar-transition;
+}
+
+.sidebar__logoIcon {
+  width: 34px;
+  height: 34px;
+  border: 1.5px solid v.$gold;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: v.$gold;
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.sidebar__logoText {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: opacity 0.25s v.$sidebar-transition, width 0.3s v.$sidebar-transition;
+  white-space: nowrap;
+
+  span:first-child {
+    font-family: v.$font-display;
+    font-size: 16px;
+    font-weight: 600;
+    color: v.$text;
+    letter-spacing: 0.04em;
+    line-height: 1.2;
+  }
+
+  span:last-child {
+    font-family: v.$font-body;
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: v.$gold;
+    line-height: 1.4;
+  }
+}
+
+.sidebar__toggle {
+  width: 28px;
+  height: 28px;
+  background: transparent;
+  border: 1px solid v.$sidebar-border;
+  border-radius: 6px;
+  color: v.$muted;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: color 0.2s, border-color 0.2s, transform 0.3s v.$sidebar-transition;
+
+  svg {
+    width: 14px;
+    height: 14px;
+    transition: transform 0.3s v.$sidebar-transition;
+  }
+
+  &:hover {
+    color: v.$gold;
+    border-color: v.$gold;
+  }
+}
+
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// ── 3. Navigation
+// ═══════════════════════════════════════════════════════════════════════════════
+
+.sidebar__nav {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 16px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+
+  // Hide scrollbar but keep scroll
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+}
+
+.sidebar__sectionLabel {
+  font-family: v.$font-body;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: v.$muted;
+  padding: 12px 8px 6px;
+  height: auto;
+  overflow: hidden;
+  white-space: nowrap;
+  transition: opacity 0.25s v.$sidebar-transition, height 0.3s v.$sidebar-transition, margin 0.3s v.$sidebar-transition;
+}
+
+.sidebar__divider {
+  height: 1px;
+  background: v.$sidebar-border;
+  margin: 10px 8px;
+  flex-shrink: 0;
+}
+
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// ── 4. Navigation Items
+// ═══════════════════════════════════════════════════════════════════════════════
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 10px;
+  height: 44px;
+  border-radius: 8px;
+  cursor: pointer;
+  text-decoration: none;
+  color: v.$muted;
+  position: relative;
+  transition: background 0.2s, color 0.2s, padding 0.3s v.$sidebar-transition, justify-content 0.3s v.$sidebar-transition;
+  white-space: nowrap;
+
+  &:hover {
+    background: v.$sidebar-bg-hover;
+    color: v.$text;
+
+    .navItem__icon {
+      color: v.$gold-light;
+    }
+  }
+}
+
+.navItem__icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s;
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.navItem__label {
+  font-family: v.$font-body;
+  font-size: 12.5px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  overflow: hidden;
+  transition: opacity 0.25s v.$sidebar-transition, width 0.3s v.$sidebar-transition;
+  white-space: nowrap;
+  flex: 1;
+}
+
+.navItem__badge {
+  font-family: v.$font-body;
+  font-size: 10px;
+  font-weight: 700;
+  background: v.$gold;
+  color: v.$bg;
+  padding: 1px 6px;
+  border-radius: 20px;
+  line-height: 1.6;
+  overflow: hidden;
+  transition: opacity 0.25s v.$sidebar-transition, width 0.3s v.$sidebar-transition;
+  white-space: nowrap;
+}
+
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// ── 5. Footer / Logout
+// ═══════════════════════════════════════════════════════════════════════════════
+
+.sidebar__footer {
+  padding: 10px 10px 20px;
+  border-top: 1px solid v.$sidebar-border;
+  flex-shrink: 0;
+}
+
+.sidebar__logout {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 10px;
+  height: 44px;
+  border-radius: 8px;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  color: v.$muted;
+  width: 100%;
+  transition: background 0.2s, color 0.2s, padding 0.3s v.$sidebar-transition, justify-content 0.3s v.$sidebar-transition;
+  white-space: nowrap;
+
+  &:hover {
+    background: rgba(180, 60, 60, 0.12);
+    color: #e07070;
+
+    .sidebar__logoutIcon svg {
+      color: #e07070;
+    }
+  }
+}
+
+.sidebar__logoutIcon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    width: 18px;
+    height: 18px;
+    transition: color 0.2s;
+  }
+}
+
+.sidebar__logoutText {
+  font-family: v.$font-body;
+  font-size: 12.5px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  overflow: hidden;
+  transition: opacity 0.25s v.$sidebar-transition, width 0.3s v.$sidebar-transition;
+  white-space: nowrap;
+}
+
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// ── 6. States (Active, Hover, Focus)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+.navItem {
+  // Active state
+  &.active {
+    background: v.$gold-dim;
+    color: v.$text;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 3px;
+      height: 22px;
+      background: v.$gold;
+      border-radius: 0 3px 3px 0;
+    }
+
+    .navItem__icon {
+      color: v.$gold;
+    }
+
+    .navItem__label {
+      color: v.$text;
+      font-weight: 600;
+    }
+  }
+}
+
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// ── 7. Collapsed State
+// ═══════════════════════════════════════════════════════════════════════════════
+
+.sidebar {
+  &.collapsed {
+    width: v.$sidebar-collapsed;
+    // ── FIX: removed `display: flex; justify-content: center; align-items: center`
+    //    from here — the sidebar shell must stay flex-direction: column so that
+    //    header / nav / footer stack vertically. Centering belongs on children only.
+
+    // ── Hide text elements ──────────────────────────────────────────────────
+    .sidebar__logoText,
+    .navItem__label,
+    .navItem__badge,
+    .sidebar__sectionLabel,
+    .sidebar__logoutText {
+      opacity: 0;
+      pointer-events: none;
+      width: 0;
+      overflow: hidden;
+    }
+
+    // ── Header ──────────────────────────────────────────────────────────────
+    .sidebar__header {
+      justify-content: center;
+      padding: 0;
+      position: relative;
+    }
+
+    .sidebar__logo {
+      flex: 0 0 auto;
+      justify-content: center;
+      padding: 0;
+    }
+
+    // ── FIX: anchor toggle absolutely so it doesn't push the icon off-center
+    .sidebar__toggle {
+      position: absolute;
+      right: 6px;
+      top: 50%;
+      transform: translateY(-50%) rotate(180deg);
+    }
+
+    // ── Nav items ────────────────────────────────────────────────────────────
+    // ── FIX: nav padding becomes symmetric so icons sit dead-center
+    .sidebar__nav {
+      padding: 16px 0;
+      align-items: center;
+    }
+
+    .navItem {
+      justify-content: center;
+      padding: 0;
+      // ── FIX: force the item to fill the collapsed width so centering works
+      width: 100%;
+
+      &.active {
+        background: v.$gold-dim;
+
+        // ── Active indicator moves to bottom edge in collapsed mode
+        &::before {
+          left: 50%;
+          top: auto;
+          bottom: 0;
+          transform: translateX(-50%);
+          width: 22px;
+          height: 3px;
+          border-radius: 3px 3px 0 0;
+        }
+      }
+    }
+
+    // ── Footer / Logout ──────────────────────────────────────────────────────
+    .sidebar__footer {
+      padding: 10px 0 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .sidebar__logout {
+      justify-content: center;
+      padding: 0;
+      // ── FIX: let the button size to its icon instead of stretching full width
+      width: 44px;
+    }
+
+    // ── Section labels collapse to zero height ───────────────────────────────
+    .sidebar__sectionLabel {
+      height: 0;
+      margin: 0;
+      padding: 0;
+    }
+
+    // ── Dividers still show, but narrower ────────────────────────────────────
+    .sidebar__divider {
+      margin: 10px 4px;
+    }
+  }
+}
+
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// ── 8. Tooltips (Collapsed State)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+.navItem,
+.sidebar__logout {
+  &[data-tooltip] {
+    position: relative;
+
+    &::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      left: calc(100% + 14px);
+      top: 50%;
+      transform: translateY(-50%);
+      background: v.$sidebar-bg-hover;
+      border: 1px solid v.$sidebar-border;
+      color: v.$text;
+      font-family: v.$font-body;
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      padding: 5px 10px;
+      border-radius: 6px;
+      white-space: nowrap;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.15s;
+      z-index: 200;
+    }
+
+    // ── FIX: use :global(.collapsed) + & so this works regardless of nesting depth
+    .sidebar.collapsed &:hover::after {
+      opacity: 1;
+    }
+  }
+}
+
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// ── 9. Responsive Design
+// ═══════════════════════════════════════════════════════════════════════════════
+
+@include m.md {
+  .sidebar {
+    width: v.$sidebar-collapsed;
+
+    .sidebar__logoText,
+    .navItem__label,
+    .navItem__badge,
+    .sidebar__sectionLabel,
+    .sidebar__logoutText {
+      display: none;
+    }
+
+    .sidebar__header {
+      justify-content: center;
+      padding: 0;
+      position: relative;
+    }
+
+    .sidebar__logo {
+      justify-content: center;
+      flex: 0 0 auto;
+    }
+
+    .sidebar__toggle {
+      display: none;
+    }
+
+    .sidebar__nav {
+      padding: 16px 0;
+      align-items: center;
+    }
+
+    .navItem {
+      justify-content: center;
+      padding: 0;
+      width: 100%;
+
+      &.active::before {
+        left: 50%;
+        top: auto;
+        bottom: 0;
+        transform: translateX(-50%);
+        width: 22px;
+        height: 3px;
+        border-radius: 3px 3px 0 0;
+      }
+    }
+
+    .sidebar__footer {
+      padding: 10px 0 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .sidebar__logout {
+      justify-content: center;
+      padding: 0;
+      width: 44px;
+    }
+
+    .sidebar__sectionLabel {
+      height: 0;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+  }
+}
+
+@include m.sm {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+    border-right: none;
+    border-bottom: 1px solid v.$sidebar-border;
+
+    &::before {
+      display: none;
+    }
+
+    .sidebar__header {
+      height: 56px;
+      padding: 0 12px;
+    }
+
+    .sidebar__logoIcon {
+      width: 28px;
+      height: 28px;
+
+      svg {
+        width: 16px;
+        height: 16px;
+      }
+    }
+
+    .sidebar__logoText {
+      display: flex;
+
+      span:first-child {
+        font-size: 14px;
+      }
+
+      span:last-child {
+        font-size: 8px;
+      }
+    }
+
+    .sidebar__nav {
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 4px;
+      padding: 8px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .sidebar__sectionLabel {
+      display: none;
+    }
+
+    .navItem {
+      height: 40px;
+      padding: 0 12px;
+      gap: 8px;
+      width: auto;
+
+      .navItem__label {
+        display: block;
+        font-size: 11px;
+      }
+
+      .navItem__badge {
+        display: none;
+      }
+
+      &.active::before {
+        display: none;
+      }
+
+      &.active {
+        background: v.$gold-dim;
+      }
+    }
+
+    .sidebar__footer {
+      padding: 8px;
+      border-top: none;
+      display: flex;
+      justify-content: center;
+    }
+
+    .sidebar__logout {
+      justify-content: center;
+      width: 44px;
+
+      .sidebar__logoutText {
+        display: none;
+      }
+    }
+  }
+}
+
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// ── 10. Reduced Motion (Accessibility)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+@media (prefers-reduced-motion: reduce) {
+  .sidebar {
+    transition: none;
+
+    &::before,
+    .sidebar__toggle,
+    .sidebar__logoText,
+    .navItem__label,
+    .navItem__badge,
+    .sidebar__sectionLabel,
+    .sidebar__logoutText {
+      transition: none;
+    }
+  }
+
+  .navItem,
+  .sidebar__logout {
+    transition: none;
+
+    &[data-tooltip]::after {
+      transition: none;
+    }
+  }
+}
