@@ -1,12 +1,17 @@
 
 import { useAuth } from "../hooks/useAuth";
 import { useState } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate, useLocation } from "react-router";
 
 
 const Login = () => {
   const {handleLogin, loading,error} = useAuth();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const location = useLocation();
+  
+  // Get the intended destination from state, default to /dashboard
+  const from = location.state?.from || "/dashboard";
+  
   const [formData,setFormData] = useState({
     email:"",
     password:""
@@ -23,7 +28,8 @@ const Login = () => {
     e.preventDefault();
     try{
       await handleLogin(formData.email,formData.password);
-      navigate("/create-room")
+      // Navigate to the original destination or default to /dashboard
+      navigate(from, { replace: true });
 
     } catch(err){
       console.error("Login error:",err);

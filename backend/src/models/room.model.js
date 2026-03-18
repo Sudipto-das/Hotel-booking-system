@@ -4,8 +4,11 @@ const mongoose = require("mongoose")
 const roomSchema = new mongoose.Schema({
     roomNumber:String,
     pricePerNight:Number,
+    type:String,  //Single,Double,Suite
+    capacity:Number,
     amenities:[String], //Ac,TV,Wifi,Fridge
     status:String,    //Available,Booked,Maintenance
+    imageUrl:String,
     createdBy:String,
     createdAt:{ type: Date, default: Date.now },
     updatedAt:{ type: Date, default: Date.now }

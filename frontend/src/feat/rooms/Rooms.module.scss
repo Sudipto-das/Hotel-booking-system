@@ -1,0 +1,702 @@
+@use '../../styles/__variables' as v;
+@use '../../styles/__mixins' as m;
+
+.roomsPage {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+// ── Header ───────────────────────────────────────────────
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+  gap: 1rem;
+
+  @include m.sm {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+.headerLeft {
+  h1 {
+    font-family: v.$font-display;
+    font-size: 2.4rem;
+    font-weight: 300;
+    color: v.$text;
+    margin: 0 0 0.5rem;
+    letter-spacing: 0.02em;
+  }
+
+  .subtitle {
+    color: v.$muted;
+    font-size: 0.9rem;
+    font-weight: 300;
+  }
+}
+
+.addButton {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  background: v.$gold;
+  color: v.$bg;
+  border: none;
+  border-radius: 3px;
+  font-family: v.$font-body;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  &:hover {
+    background: v.$gold-light;
+    transform: translateY(-1px);
+  }
+
+  @include m.sm {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+// ── Stats Grid ───────────────────────────────────────────
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+
+  @include m.md {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include m.sm {
+    grid-template-columns: 1fr;
+  }
+}
+
+.statCard {
+  background: v.$surface;
+  border: 1px solid v.$border;
+  border-radius: 4px;
+  padding: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: border-color 0.2s;
+
+  &:hover {
+    border-color: rgba(v.$gold, 0.3);
+  }
+
+  .statIcon {
+    width: 44px;
+    height: 44px;
+    border-radius: 4px;
+    background: rgba(v.$gold, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+      width: 22px;
+      height: 22px;
+      stroke: v.$gold;
+    }
+  }
+
+  .statInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .statValue {
+    font-family: v.$font-display;
+    font-size: 1.75rem;
+    font-weight: 400;
+    color: v.$text;
+    line-height: 1;
+  }
+
+  .statLabel {
+    font-size: 0.75rem;
+    color: v.$muted;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  // Status variants
+  &.statAvailable .statIcon {
+    background: rgba(#22c55e, 0.12);
+    svg { stroke: #22c55e; }
+  }
+
+  &.statOccupied .statIcon {
+    background: rgba(v.$muted, 0.15);
+    svg { stroke: v.$muted; }
+  }
+
+  &.statMaintenance .statIcon {
+    background: rgba(#ef4444, 0.12);
+    svg { stroke: #ef4444; }
+  }
+}
+
+// ── Filters ───────────────────────────────────────────────
+.filters {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+
+  @include m.sm {
+    flex-direction: column;
+  }
+}
+
+.searchBox {
+  flex: 1;
+  min-width: 280px;
+  position: relative;
+
+  svg {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    stroke: v.$muted;
+    pointer-events: none;
+  }
+
+  input {
+    width: 100%;
+    padding: 0.75rem 1rem 0.75rem 2.75rem;
+    background: v.$input-bg;
+    border: 1px solid v.$border;
+    border-radius: 3px;
+    color: v.$text;
+    font-family: v.$font-body;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+
+    &::placeholder {
+      color: v.$muted;
+    }
+
+    &:focus {
+      border-color: rgba(v.$gold, 0.6);
+      box-shadow: 0 0 0 3px rgba(v.$gold, 0.08);
+    }
+  }
+}
+
+.filterGroup {
+  display: flex;
+  gap: 0.75rem;
+
+  @include m.sm {
+    width: 100%;
+  }
+}
+
+.filterSelect {
+  padding: 0.75rem 2rem 0.75rem 1rem;
+  background: v.$input-bg;
+  border: 1px solid v.$border;
+  border-radius: 3px;
+  color: v.$text;
+  font-family: v.$font-body;
+  font-size: 0.85rem;
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236e6e78' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  transition: border-color 0.2s;
+
+  &:focus {
+    border-color: rgba(v.$gold, 0.6);
+  }
+
+  @include m.sm {
+    flex: 1;
+  }
+
+  option {
+    background: v.$surface;
+    color: v.$text;
+  }
+}
+
+// ── Room Grid ───────────────────────────────────────────
+.roomGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+
+  @include m.sm {
+    grid-template-columns: 1fr;
+  }
+}
+
+.roomCard {
+  background: v.$surface;
+  border: 1px solid v.$border;
+  border-radius: 4px;
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+    border-color: rgba(v.$gold, 0.3);
+  }
+}
+
+.roomImage {
+  position: relative;
+  height: 180px;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s;
+  }
+
+  .roomCard:hover & img {
+    transform: scale(1.05);
+  }
+
+  .roomStatus {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 2px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    backdrop-filter: blur(8px);
+  }
+}
+
+.statusAvailable {
+  background: rgba(#22c55e, 0.9);
+  color: #fff;
+}
+
+.statusOccupied {
+  background: rgba(v.$muted, 0.85);
+  color: #fff;
+}
+
+.statusMaintenance {
+  background: rgba(#ef4444, 0.9);
+  color: #fff;
+}
+
+.roomContent {
+  padding: 1.25rem;
+}
+
+.roomHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+
+  h3 {
+    font-family: v.$font-display;
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: v.$text;
+    margin: 0;
+  }
+
+  .roomType {
+    font-size: 0.72rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: v.$gold;
+    padding: 0.25rem 0.5rem;
+    border: 1px solid rgba(v.$gold, 0.35);
+    border-radius: 2px;
+  }
+}
+
+.roomDetails {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid v.$border;
+}
+
+.roomDetail {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: v.$muted;
+  font-size: 0.85rem;
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  span {
+    color: v.$text;
+    font-weight: 500;
+
+    small {
+      font-weight: 300;
+      color: v.$muted;
+    }
+  }
+}
+
+.roomAmenities {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.amenityTag {
+  font-size: 0.7rem;
+  padding: 0.25rem 0.5rem;
+  background: rgba(v.$gold, 0.1);
+  border: 1px solid rgba(v.$gold, 0.2);
+  border-radius: 2px;
+  color: v.$gold;
+}
+
+.amenityMore {
+  font-size: 0.7rem;
+  padding: 0.25rem 0.5rem;
+  background: v.$input-bg;
+  border-radius: 2px;
+  color: v.$muted;
+}
+
+.roomActions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.viewButton {
+  flex: 1;
+  padding: 0.65rem 1rem;
+  background: transparent;
+  border: 1px solid v.$border;
+  border-radius: 3px;
+  color: v.$text;
+  font-family: v.$font-body;
+  font-size: 0.78rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+
+  &:hover {
+    border-color: v.$gold;
+    background: rgba(v.$gold, 0.08);
+  }
+}
+
+.editButton {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid v.$border;
+  border-radius: 3px;
+  color: v.$muted;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  &:hover {
+    border-color: v.$gold;
+    color: v.$gold;
+  }
+}
+
+// ── Empty State ───────────────────────────────────────────
+.emptyState {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: v.$muted;
+
+  svg {
+    width: 64px;
+    height: 64px;
+    margin-bottom: 1.5rem;
+    opacity: 0.4;
+  }
+
+  h3 {
+    font-family: v.$font-display;
+    font-size: 1.5rem;
+    color: v.$text;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    font-size: 0.9rem;
+  }
+}
+
+// ── Modal ────────────────────────────────────────────────
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal {
+  width: 100%;
+  max-width: 520px;
+  background: v.$surface;
+  border: 1px solid v.$border;
+  border-radius: 4px;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid v.$border;
+
+  h2 {
+    font-family: v.$font-display;
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: v.$text;
+    margin: 0;
+  }
+
+  .closeButton {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: v.$muted;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background 0.2s, color 0.2s;
+
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    &:hover {
+      background: v.$input-bg;
+      color: v.$text;
+    }
+  }
+}
+
+.modalForm {
+  padding: 1.5rem;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+
+  @include m.sm {
+    grid-template-columns: 1fr;
+  }
+}
+
+.formGroup {
+  margin-bottom: 1rem;
+
+  label {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: v.$muted;
+    margin-bottom: 0.5rem;
+  }
+
+  input,
+  select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: v.$input-bg;
+    border: 1px solid v.$border;
+    border-radius: 3px;
+    color: v.$text;
+    font-family: v.$font-body;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+
+    &::placeholder {
+      color: v.$muted;
+    }
+
+    &:focus {
+      border-color: rgba(v.$gold, 0.6);
+      box-shadow: 0 0 0 3px rgba(v.$gold, 0.08);
+    }
+  }
+
+  select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236e6e78' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    cursor: pointer;
+
+    option {
+      background: v.$surface;
+    }
+  }
+}
+
+.amenitiesCheckboxes {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+
+  @include m.sm {
+    grid-template-columns: 1fr;
+  }
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+
+  input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: v.$gold;
+    cursor: pointer;
+  }
+
+  span {
+    font-size: 0.85rem;
+    color: v.$text;
+    text-transform: none;
+    letter-spacing: normal;
+  }
+}
+
+.modalActions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid v.$border;
+
+  @include m.sm {
+    flex-direction: column-reverse;
+  }
+}
+
+.cancelButton {
+  flex: 1;
+  padding: 0.85rem;
+  background: transparent;
+  border: 1px solid v.$border;
+  border-radius: 3px;
+  color: v.$muted;
+  font-family: v.$font-body;
+  font-size: 0.78rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+
+  &:hover {
+    border-color: v.$text;
+    color: v.$text;
+  }
+}
+
+.saveButton {
+  flex: 1;
+  padding: 0.85rem;
+  background: v.$gold;
+  border: none;
+  border-radius: 3px;
+  color: v.$bg;
+  font-family: v.$font-body;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+
+  &:hover {
+    background: v.$gold-light;
+    transform: translateY(-1px);
+  }
+}
