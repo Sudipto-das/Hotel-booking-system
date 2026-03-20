@@ -4,6 +4,11 @@
 .roomsPage {
   max-width: 1400px;
   margin: 0 auto;
+  padding: 0.5rem;
+
+  @include m.sm {
+    padding: 1rem;
+  }
 }
 
 // ── Header ───────────────────────────────────────────────
@@ -17,6 +22,8 @@
   @include m.sm {
     flex-direction: column;
     align-items: stretch;
+    margin-bottom: 1.5rem;
+    gap: 1rem;
   }
 }
 
@@ -28,12 +35,20 @@
     color: v.$text;
     margin: 0 0 0.5rem;
     letter-spacing: 0.02em;
+
+    @include m.sm {
+      font-size: 1.75rem;
+    }
   }
 
   .subtitle {
     color: v.$muted;
     font-size: 0.9rem;
     font-weight: 300;
+
+    @include m.sm {
+      font-size: 0.8rem;
+    }
   }
 }
 
@@ -83,6 +98,8 @@
 
   @include m.sm {
     grid-template-columns: 1fr;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
   }
 }
 
@@ -163,6 +180,8 @@
 
   @include m.sm {
     flex-direction: column;
+    margin-bottom: 1.5rem;
+    gap: 0.75rem;
   }
 }
 
@@ -170,6 +189,10 @@
   flex: 1;
   min-width: 280px;
   position: relative;
+
+  @include m.sm {
+    min-width: 100%;
+  }
 
   svg {
     position: absolute;
@@ -252,6 +275,7 @@
 
   @include m.sm {
     grid-template-columns: 1fr;
+    gap: 1rem;
   }
 }
 
@@ -273,6 +297,10 @@
   position: relative;
   height: 180px;
   overflow: hidden;
+
+  @include m.sm {
+    height: 150px;
+  }
 
   img {
     width: 100%;
@@ -296,6 +324,11 @@
     text-transform: uppercase;
     letter-spacing: 0.08em;
     backdrop-filter: blur(8px);
+
+    @include m.sm {
+      font-size: 0.6rem;
+      padding: 0.25rem 0.5rem;
+    }
   }
 }
 
@@ -484,6 +517,12 @@
   padding: 1rem;
   z-index: 1000;
   animation: fadeIn 0.2s ease;
+
+  @include m.sm {
+    padding: 0.5rem;
+    align-items: flex-start;
+    padding-top: 1rem;
+  }
 }
 
 @keyframes fadeIn {
@@ -499,6 +538,25 @@
   border-radius: 4px;
   box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
   animation: slideUp 0.3s ease;
+  max-height: 90vh;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  @include m.sm {
+    max-width: calc(100% - 2rem);
+    margin: 1rem;
+    max-height: calc(100vh - 2rem);
+  }
+
+  @include m.md {
+    max-width: calc(100% - 3rem);
+    margin: 1.5rem;
+  }
 }
 
 @keyframes slideUp {
@@ -525,6 +583,10 @@
     font-weight: 400;
     color: v.$text;
     margin: 0;
+
+    @include m.sm {
+      font-size: 1.25rem;
+    }
   }
 
   .closeButton {
@@ -554,6 +616,10 @@
 
 .modalForm {
   padding: 1.5rem;
+
+  @include m.sm {
+    padding: 1rem;
+  }
 }
 
 .formRow {
@@ -614,6 +680,46 @@
       background: v.$surface;
     }
   }
+
+  input[type="file"] {
+    padding: 0.5rem 0;
+    background: transparent;
+    border: none;
+
+    &::file-selector-button {
+      padding: 0.5rem 1rem;
+      background: v.$surface;
+      border: 1px solid v.$border;
+      border-radius: 3px;
+      color: v.$text;
+      cursor: pointer;
+      margin-right: 1rem;
+      transition: background-color 0.2s;
+
+      &:hover {
+        background: v.$input-bg;
+      }
+    }
+  }
+}
+
+.imagePreview {
+  margin-top: 1rem;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid v.$border;
+
+  img {
+    width: 100%;
+    height: auto;
+    display: block;
+    max-height: 200px;
+    object-fit: cover;
+
+    @include m.sm {
+      max-height: 150px;
+    }
+  }
 }
 
 .amenitiesCheckboxes {
@@ -656,6 +762,9 @@
 
   @include m.sm {
     flex-direction: column-reverse;
+    gap: 0.75rem;
+    padding-top: 1rem;
+    margin-top: 1rem;
   }
 }
 

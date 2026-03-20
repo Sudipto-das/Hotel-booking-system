@@ -3,9 +3,9 @@ const Room = require("../models/room.model.js")
 
 const createRoomController = async (req,res)=>{
     try{
-        const {roomNumber,pricePerNight,amenities} = req.body;
+        const {roomNumber,pricePerNight,amenities,type,capacity,imageUrl} = req.body;
         const room = await Room.create({
-            roomNumber,pricePerNight,amenities,status:"Available",createdBy:"Admin"
+            roomNumber,pricePerNight,amenities,type,capacity,imageUrl,status:"Available",createdBy:"Admin"
         })
         res.status(201).json({message:"Room created successfully",room})
 
@@ -26,8 +26,8 @@ const getAllRoomsController =async(req,res)=>{
 const updateRoomController = async(req,res)=>{
     try{
         const {id} = req.params;
-        const {roomNumber,pricePerNight,amenities,status} =req.body;
-        const room = await Room.findByIdAndUpdate(id,{roomNumber,pricePerNight,amenities,status,updatedAt:Date.now()},{returnDocument:"after"});
+        const {roomNumber,pricePerNight,amenities,status,capacity,type} =req.body;
+        const room = await Room.findByIdAndUpdate(id,{roomNumber,pricePerNight,amenities,status,capacity,type,updatedAt:Date.now()},{returnDocument:"after"});
         if(!room){
             return res.status(404).json({message:"Room not found"})
         }

@@ -39,22 +39,33 @@ h1, h2, h3, h4 {
 .main-content {
   flex: 1;
   margin-left: v.$sidebar-expanded;
-  padding: 2rem;
+  padding: 0.5rem;
   transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   background-color: v.$bg;
   min-height: 100vh;
   width: calc(100% - v.$sidebar-expanded);
+
+  @media (max-width: 768px) {
+    margin-left: 0;
+    padding: 1rem;
+    width: 100%;
+  }
 }
 
-// Sidebar collapsed state
+// Sidebar collapsed state - main content takes full width
 .app-layout.sidebar-collapsed .main-content {
   margin-left: v.$sidebar-collapsed;
   width: calc(100% - v.$sidebar-collapsed);
+
+  @media (max-width: 768px) {
+    margin-left: 0;
+    width: 100%;
+  }
 }
 
 // ── Page Content ───────────────────────────────────────────────────────────────
 .page-content {
-  padding: 1rem;
+  padding: 0 0.5rem;
 
   h1 {
     font-size: 2rem;

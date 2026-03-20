@@ -1,0 +1,29 @@
+.mobileMenuBtn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: 1px solid #333;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 1rem;
+  color: #999;
+  transition: color 0.2s, background 0.2s;
+
+  svg {
+    width: 20px;
+    height: 20px;
+    stroke-width: 2;
+  }
+
+  &:hover {
+    color: #fff;
+    background: #333;
+  }
+
+  @media (max-width: 768px) {
+    display: flex;
+  }
+}

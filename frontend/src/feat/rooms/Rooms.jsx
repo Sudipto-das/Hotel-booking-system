@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import styles from './Rooms.module.scss';
-import { initialRooms,roomTypes,statusFilters } from './room';
+import { roomTypes,statusFilters } from './room';
 import AddNewRoomModal from './components/addNewRoomModal';
 import { useRoom } from './hooks/useRoom';
 
@@ -11,7 +11,7 @@ const Rooms = () => {
   const [typeFilter, setTypeFilter] = useState('All');
   const [statusFilter, setStatusFilter] = useState('All');
   const [searchTerm, setSearchTerm] = useState('');
-  console.log("Rooms data:", rooms);
+  
 
   useEffect(() => {
     fetchRooms();
@@ -43,12 +43,12 @@ const Rooms = () => {
     }
   };
 
-  const handleAddRoom = () => {
+  const handleCreateRoom = () => {
     setEditingRoom(null);
     setShowModal(true);
   };
 
-  const handleEditRoom = (room) => {
+  const handleUpdateRoom = (room) => {
     setEditingRoom(room);
     setShowModal(true);
   };
@@ -62,7 +62,7 @@ const Rooms = () => {
             <h1>Rooms</h1>
             <p className={styles.subtitle}>Manage hotel rooms and allocations</p>
           </div>
-          <button className={styles.addButton} onClick={handleAddRoom}>
+          <button className={styles.addButton} onClick={handleCreateRoom}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <line x1="12" y1="5" x2="12" y2="19" />
               <line x1="5" y1="12" x2="19" y2="12" />
@@ -204,7 +204,7 @@ const Rooms = () => {
                   )}
                 </div>
                 <div className={styles.roomActions}>
-                  <button className={styles.viewButton} onClick={() => handleEditRoom(room)}>View Details</button>
+                  <button className={styles.viewButton} onClick={() => handleUpdateRoom(room)}>View Details</button>
                   <button className={styles.editButton}>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
                       <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />

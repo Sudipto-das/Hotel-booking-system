@@ -20,7 +20,7 @@ const getAllRooms = async() =>{
 
 const addRoom = async(roomData) =>{
     try{
-        const response = await api.post('/add',roomData);
+        const response = await api.post('/create',roomData);
         return response.data;
     } catch(error){
         console.error("Error adding room:", error);

@@ -17,7 +17,7 @@ export const RoomProvider = ({ children }) => {
     };
     const handleUpdateRoom = async (updatedRoom) => {
         try{
-            const room = await updateRoom(updatedRoom);
+            const room = await updateRoom(updatedRoom._id,updatedRoom);
             setRooms(prevRooms => prevRooms.map(r => r.id === room.id ? room : r));
         } catch (err) {
             console.error("Failed to update room:", err);
