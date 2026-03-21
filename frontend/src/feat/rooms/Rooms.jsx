@@ -6,6 +6,15 @@ import { useRoom } from './hooks/useRoom';
 
 const Rooms = () => {
   const {rooms, setRooms,fetchRooms} = useRoom();
+  
+  // Helper function to get full image URL
+  const getImageUrl = (imageUrl) => {
+    if (!imageUrl) return '/placeholder-room.jpg';
+    // If it's already a full URL, return as is
+    if (imageUrl.startsWith('http')) return imageUrl;
+    // Otherwise, prepend the backend URL
+    return `http://localhost:3000${imageUrl}`;
+  };
   const [editingRoom, setEditingRoom] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [typeFilter, setTypeFilter] = useState('All');
@@ -169,7 +178,7 @@ const Rooms = () => {
           {filteredRooms.map(room => (
             <div key={room._id || room.id} className={styles.roomCard}>
               <div className={styles.roomImage}>
-                <img src={room.imageUrl} alt={`Room ${room.roomNumber}`} />
+                <img src={getImageUrl(room.imageUrl)} alt={`Room ${room.roomNumber}`} />
                 <span className={`${styles.roomStatus} ${getStatusClass(room.status)}`}>
                   {room.status}
                 </span>

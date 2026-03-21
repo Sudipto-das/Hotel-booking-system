@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const path = require("path");
 const app = express();
 const cookieParser = require("cookie-parser")
 
@@ -11,6 +12,9 @@ app.use(cors(
     }
 ));
 app.use(express.json());
+
+// Serve uploaded files statically
+app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 
 
 const authRouter = require("./routes/auth.routes.js");

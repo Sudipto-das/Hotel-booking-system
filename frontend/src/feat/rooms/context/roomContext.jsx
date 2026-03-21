@@ -6,19 +6,19 @@ export const RoomContext = createContext();
 export const RoomProvider = ({ children }) => {
     const [rooms, setRooms] = useState([]);
 
-    const handleAddRoom = async (newRoom) => {
+    const handleAddRoom = async (newRoom, imageFile = null) => {
         try {
-            const createdRoom = await addRoom(newRoom);
-            setRooms(prevRooms => [...prevRooms, createdRoom]);
+            const result = await addRoom(newRoom, imageFile);
+            setRooms(prevRooms => [...prevRooms, result.room]);
         } catch (err) {
             console.error("Failed to add room:", err);
         }
 
     };
-    const handleUpdateRoom = async (updatedRoom) => {
+    const handleUpdateRoom = async (updatedRoom, imageFile = null) => {
         try{
-            const room = await updateRoom(updatedRoom._id,updatedRoom);
-            setRooms(prevRooms => prevRooms.map(r => r.id === room.id ? room : r));
+            const result = await updateRoom(updatedRoom._id || updatedRoom.id, updatedRoom, imageFile);
+            setRooms(prevRooms => prevRooms.map(r => (r._id || r.id) === (result.room._id || result.room.id) ? result.room : r));
         } catch (err) {
             console.error("Failed to update room:", err);
 

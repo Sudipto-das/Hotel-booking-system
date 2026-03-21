@@ -3,7 +3,10 @@ import axios from "axios";
 
 const api = axios.create({
     baseURL: "http://localhost:3000/api/rooms",
-    withCredentials: true
+    withCredentials: true,
+    headers: {
+        "Content-Type": "application/json"
+    }
 })
 
 
@@ -18,9 +21,29 @@ const getAllRooms = async() =>{
 }
 
 
-const addRoom = async(roomData) =>{
+const addRoom = async(roomData, imageFile) =>{
     try{
-        const response = await api.post('/create',roomData);
+        // Create FormData for file upload
+        const formData = new FormData();
+        
+        // Append all room fields
+        formData.append("roomNumber", roomData.roomNumber);
+        formData.append("type", roomData.type);
+        formData.append("pricePerNight", roomData.pricePerNight);
+        formData.append("capacity", roomData.capacity);
+        formData.append("status", roomData.status);
+        formData.append("amenities", JSON.stringify(roomData.amenities));
+        
+        // Append image file if exists
+        if (imageFile) {
+            formData.append("image", imageFile);
+        }
+
+        const response = await api.post('/create', formData, {
+            headers: {
+                "Content-Type": "multipart/form-data"
+            }
+        });
         return response.data;
     } catch(error){
         console.error("Error adding room:", error);
@@ -28,9 +51,29 @@ const addRoom = async(roomData) =>{
     }
 }
 
-const updateRoom = async(roomId,roomData) =>{
+const updateRoom = async(roomId, roomData, imageFile) =>{
     try{
-        const response = await api.put(`/update/${roomId}`,roomData);
+        // Create FormData for file upload
+        const formData = new FormData();
+        
+        // Append all room fields
+        formData.append("roomNumber", roomData.roomNumber);
+        formData.append("type", roomData.type);
+        formData.append("pricePerNight", roomData.pricePerNight);
+        formData.append("capacity", roomData.capacity);
+        formData.append("status", roomData.status);
+        formData.append("amenities", JSON.stringify(roomData.amenities));
+        
+        // Append image file if exists
+        if (imageFile) {
+            formData.append("image", imageFile);
+        }
+
+        const response = await api.put(`/update/${roomId}`, formData, {
+            headers: {
+                "Content-Type": "multipart/form-data"
+            }
+        });
         return response.data;
     } catch(error){
         console.error("Error updating room:", error);

@@ -16,6 +16,9 @@ const AddRoomModal = ({ editingRoom, setShowModal }) => {
     imageUrl: editingRoom?.imageUrl || ''
   });
 
+  // Store the actual file object for upload
+  const [imageFile, setImageFile] = useState(null);
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
 
@@ -51,14 +54,13 @@ const AddRoomModal = ({ editingRoom, setShowModal }) => {
       pricePerNight: parseFloat(formData.pricePerNight),
       capacity: parseInt(formData.capacity),
       status: formData.status,
-      amenities: formData.amenities,
-      imageUrl: formData.imageUrl
+      amenities: formData.amenities
     };
 
     if (editingRoom) {
-      handleUpdateRoom({ ...editingRoom, ...roomData });
+      handleUpdateRoom({ ...editingRoom, ...roomData }, imageFile);
     } else {
-      handleAddRoom(roomData);
+      handleAddRoom(roomData, imageFile);
     }
 
     setShowModal(false);
@@ -182,18 +184,20 @@ const AddRoomModal = ({ editingRoom, setShowModal }) => {
             <label>Room Image</label>
             <input
               type="file"
-              name="imageUrl"
+              name="image"
               accept="image/*"
               onChange={(e) => {
                 const file = e.target.files[0];
                 if (file) {
+                  // Store the actual file for upload
+                  setImageFile(file);
                   // Create a local URL for preview
                   const fileUrl = URL.createObjectURL(file);
                   setFormData((prev) => ({ ...prev, imageUrl: fileUrl }));
                 }
               }}
             />
-            {formData.imageUrl && (
+            {(formData.imageUrl || imageFile) && (
               <div className={styles.imagePreview}>
                 <img src={formData.imageUrl} alt="Room preview" />
               </div>
