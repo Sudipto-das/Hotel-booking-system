@@ -1,0 +1,625 @@
+@use '../../styles/__variables' as v;
+@use '../../styles/__mixins' as m;
+
+// ── Page ──────────────────────────────────────────────────────────────────────
+
+.page {
+  background: v.$bg;
+  min-height: 100vh;
+  padding: 1.5rem 0.5rem;
+  animation: fadeUp 0.4s ease both;
+
+  @include m.md { padding: 1.75rem 1.25rem; }
+  @include m.sm { padding: 1.25rem 1rem; }
+}
+
+// ── Header ────────────────────────────────────────────────────────────────────
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+
+  @include m.sm { flex-direction: column; align-items: flex-start; }
+}
+
+.header__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.header__tag {
+  font-size: 0.65rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: v.$gold;
+  font-weight: 500;
+  margin-bottom: 0.6rem;
+}
+
+.header__title {
+  font-family: v.$font-display;
+  font-weight: 300;
+  font-size: 2.8rem;
+  color: v.$text;
+  line-height: 1;
+
+  @include m.sm { font-size: 1.75rem; }
+}
+
+.header__subtitle {
+  color: v.$muted;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+  font-weight: 300;
+}
+
+// ── Stat Cards ────────────────────────────────────────────────────────────────
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background: v.$surface;
+  border: 1px solid v.$border;
+  border-radius: 4px;
+  padding: 1.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, v.$gold, transparent);
+    opacity: 0.4;
+  }
+}
+
+.stat-card__icon {
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+.stat-card__value {
+  font-family: v.$font-display;
+  font-size: 2.2rem;
+  font-weight: 300;
+  color: v.$text;
+  line-height: 1;
+}
+
+.stat-card__label {
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: v.$muted;
+  font-weight: 500;
+}
+
+// ── Toolbar (search + filters) ────────────────────────────────────────────────
+
+.toolbar {
+  background: v.$surface;
+  border: 1px solid v.$border;
+  border-radius: 4px;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 1.25rem;
+
+  @include m.sm { flex-direction: column; align-items: stretch; }
+}
+
+.search {
+  flex: 1;
+  min-width: 200px;
+  background: v.$input-bg;
+  border: 1px solid v.$border;
+  border-radius: 3px;
+  padding: 0.65rem 1rem;
+  color: v.$text;
+  font-family: v.$font-body;
+  font-size: 0.88rem;
+  font-weight: 300;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+
+  &::placeholder { color: v.$muted; }
+
+  &:focus {
+    border-color: rgba(v.$gold, 0.6);
+    box-shadow: 0 0 0 3px rgba(v.$gold, 0.08);
+  }
+
+  @include m.sm { min-width: unset; width: 100%; }
+}
+
+.filters {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  background: transparent;
+  border: 1px solid v.$border;
+  border-radius: 2px;
+  padding: 0.4rem 0.9rem;
+  color: v.$muted;
+  font-family: v.$font-body;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+
+  &:hover {
+    border-color: rgba(v.$gold, 0.4);
+    color: v.$text;
+  }
+
+  &--active {
+    background: v.$gold-dim;
+    border-color: v.$gold;
+    color: v.$gold;
+
+    &:hover {
+      background: v.$gold-dim;
+      border-color: v.$gold;
+      color: v.$gold;
+    }
+  }
+}
+
+// ── Table ─────────────────────────────────────────────────────────────────────
+
+.table-wrapper {
+  background: v.$surface;
+  border: 1px solid v.$border;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.table-scroll {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table__head-row {
+  border-bottom: 1px solid v.$border;
+}
+
+.table__th {
+  padding: 0.9rem 1.25rem;
+  text-align: left;
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: v.$muted;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.table__row {
+  border-bottom: 1px solid v.$border;
+  cursor: pointer;
+  transition: background 0.15s;
+
+  &:last-child { border-bottom: none; }
+
+  &:hover,
+  &--active {
+    background: rgba(v.$gold, 0.04);
+  }
+}
+
+.table__td {
+  padding: 1rem 1.25rem;
+  color: v.$muted;
+  font-size: 0.85rem;
+  vertical-align: middle;
+
+  &--vip { width: 48px; }
+}
+
+.table__empty {
+  padding: 3rem;
+  text-align: center;
+  color: v.$muted;
+  font-size: 0.9rem;
+}
+
+.table__footer {
+  padding: 0.9rem 1.5rem;
+  border-top: 1px solid v.$border;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.table__footer-text {
+  font-size: 0.75rem;
+  color: v.$muted;
+}
+
+// ── Guest cell (name + email inside a td) ─────────────────────────────────────
+
+.guest-name {
+  font-family: v.$font-display;
+  font-size: 1.05rem;
+  color: v.$text;
+  font-weight: 400;
+}
+
+.guest-email {
+  font-size: 0.78rem;
+  color: v.$muted;
+  margin-top: 2px;
+}
+
+.guest-stay {
+  font-size: 0.82rem;
+  color: v.$muted;
+}
+
+.stay-arrow {
+  margin: 0 0.4rem;
+  color: v.$border;
+}
+
+.vip-label {
+  color: v.$gold;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  font-weight: 500;
+}
+
+// ── Status Badge ──────────────────────────────────────────────────────────────
+
+.badge {
+  display: inline-block;
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.7rem;
+  border-radius: 2px;
+  white-space: nowrap;
+  border: 1px solid transparent;
+
+  &--checked-in {
+    color: #4caf82;
+    background: rgba(76, 175, 130, 0.1);
+    border-color: rgba(76, 175, 130, 0.25);
+  }
+
+  &--reserved {
+    color: v.$gold;
+    background: rgba(v.$gold, 0.1);
+    border-color: rgba(v.$gold, 0.25);
+  }
+
+  &--checked-out {
+    color: v.$muted;
+    background: rgba(110, 110, 120, 0.1);
+    border-color: rgba(110, 110, 120, 0.25);
+  }
+}
+
+// ── Buttons ───────────────────────────────────────────────────────────────────
+
+.btn-primary {
+  background: v.$gold;
+  color: v.$bg;
+  border: none;
+  border-radius: 3px;
+  padding: 0.75rem 1.75rem;
+  font-family: v.$font-body;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  white-space: nowrap;
+
+  &:hover {
+    background: v.$gold-light;
+    transform: translateY(-1px);
+  }
+
+  &:active { transform: translateY(0); }
+}
+
+.btn-ghost {
+  background: transparent;
+  border: 1px solid v.$border;
+  border-radius: 3px;
+  color: v.$muted;
+  font-family: v.$font-body;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+  padding: 0.8rem 1rem;
+
+  &:hover {
+    border-color: v.$muted;
+    color: v.$text;
+  }
+}
+
+.btn-action {
+  background: transparent;
+  border: 1px solid v.$border;
+  border-radius: 3px;
+  color: v.$muted;
+  font-family: v.$font-body;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 0.6rem 1rem;
+  text-align: left;
+  width: 100%;
+  transition: border-color 0.2s, color 0.2s;
+
+  &:hover {
+    border-color: v.$gold;
+    color: v.$gold;
+  }
+}
+
+.btn-close {
+  background: transparent;
+  border: 1px solid v.$border;
+  border-radius: 3px;
+  color: v.$muted;
+  cursor: pointer;
+  padding: 0.3rem 0.6rem;
+  font-size: 1rem;
+  line-height: 1;
+  transition: border-color 0.2s, color 0.2s;
+  flex-shrink: 0;
+
+  &:hover {
+    border-color: v.$gold;
+    color: v.$gold;
+  }
+}
+
+// ── Overlay ───────────────────────────────────────────────────────────────────
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 99;
+}
+
+.overlay--modal {
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 199;
+}
+
+// ── Detail Panel ──────────────────────────────────────────────────────────────
+
+.panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 360px;
+  background: v.$surface;
+  border-left: 1px solid v.$border;
+  box-shadow: -24px 0 64px rgba(0, 0, 0, 0.5);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  animation: slideIn 0.25s cubic-bezier(0.4, 0, 0.2, 1) both;
+
+  @include m.sm { width: 100%; }
+}
+
+.panel__header {
+  padding: 1.75rem 2rem;
+  border-bottom: 1px solid v.$border;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.panel__header-meta {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.panel__tag {
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: v.$gold;
+  margin-bottom: 0.6rem;
+  font-weight: 500;
+}
+
+.panel__name {
+  font-family: v.$font-display;
+  font-size: 1.7rem;
+  font-weight: 300;
+  color: v.$text;
+  line-height: 1.15;
+}
+
+.panel__vip {
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: v.$gold;
+  margin-top: 0.3rem;
+}
+
+.panel__body {
+  padding: 2rem;
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.panel__divider {
+  height: 1px;
+  background: v.$border;
+  flex-shrink: 0;
+}
+
+// ── Info Field (label + value pair in panel) ──────────────────────────────────
+
+.field__label {
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: v.$muted;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.field__value {
+  color: v.$text;
+  font-size: 0.9rem;
+  font-weight: 300;
+}
+
+.panel__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+// ── Add Guest Modal ───────────────────────────────────────────────────────────
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(480px, 92vw);
+  background: v.$surface;
+  border: 1px solid v.$border;
+  border-radius: 4px;
+  padding: 2.5rem;
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.6);
+  z-index: 200;
+  animation: fadeUp 0.25s ease both;
+}
+
+.modal__tag {
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: v.$gold;
+  margin-bottom: 0.6rem;
+  font-weight: 500;
+}
+
+.modal__title {
+  font-family: v.$font-display;
+  font-weight: 300;
+  font-size: 1.9rem;
+  color: v.$text;
+  margin-bottom: 2rem;
+}
+
+.modal__form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.modal__dates {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+
+  @include m.sm { grid-template-columns: 1fr; }
+}
+
+.modal__actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+// ── Form Group (shared with modal) ────────────────────────────────────────────
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+
+  label {
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: v.$muted;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+
+  input {
+    background: v.$input-bg;
+    border: 1px solid v.$border;
+    border-radius: 3px;
+    padding: 0.75rem 1rem;
+    color: v.$text;
+    font-family: v.$font-body;
+    font-size: 0.9rem;
+    font-weight: 300;
+    outline: none;
+    width: 100%;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    color-scheme: dark;
+
+    &::placeholder { color: v.$muted; font-weight: 300; }
+
+    &:focus {
+      border-color: rgba(v.$gold, 0.6);
+      box-shadow: 0 0 0 3px rgba(v.$gold, 0.08);
+    }
+  }
+
+  &:focus-within label { color: v.$gold; }
+}
+
+// ── Keyframes ─────────────────────────────────────────────────────────────────
+
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to   { transform: translateX(0);    opacity: 1; }
+}

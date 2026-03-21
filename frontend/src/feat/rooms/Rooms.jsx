@@ -68,6 +68,7 @@ const Rooms = () => {
         {/* Header */}
         <div className={styles.header}>
           <div className={styles.headerLeft}>
+            <span className={styles["header__tag"]}>Management</span>
             <h1>Rooms</h1>
             <p className={styles.subtitle}>Manage hotel rooms and allocations</p>
           </div>

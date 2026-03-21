@@ -4,7 +4,7 @@
 .roomsPage {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 0.5rem;
+  padding: 1.5rem 1rem;
 
   @include m.sm {
     padding: 1rem;
@@ -30,7 +30,7 @@
 .headerLeft {
   h1 {
     font-family: v.$font-display;
-    font-size: 2.4rem;
+    font-size: 2.8rem;
     font-weight: 300;
     color: v.$text;
     margin: 0 0 0.5rem;
@@ -39,6 +39,15 @@
     @include m.sm {
       font-size: 1.75rem;
     }
+  }
+
+  .header__tag {
+    font-size: 0.65rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: v.$gold;
+    font-weight: 500;
+    margin-bottom: 0.6rem;
   }
 
   .subtitle {
@@ -157,17 +166,26 @@
   // Status variants
   &.statAvailable .statIcon {
     background: rgba(#22c55e, 0.12);
-    svg { stroke: #22c55e; }
+
+    svg {
+      stroke: #22c55e;
+    }
   }
 
   &.statOccupied .statIcon {
     background: rgba(v.$muted, 0.15);
-    svg { stroke: v.$muted; }
+
+    svg {
+      stroke: v.$muted;
+    }
   }
 
   &.statMaintenance .statIcon {
     background: rgba(#ef4444, 0.12);
-    svg { stroke: #ef4444; }
+
+    svg {
+      stroke: #ef4444;
+    }
   }
 }
 
@@ -526,8 +544,13 @@
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 .modal {
@@ -564,6 +587,7 @@
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
