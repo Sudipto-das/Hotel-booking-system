@@ -7,7 +7,7 @@ const cookieParser = require("cookie-parser")
 app.use(cookieParser())
 app.use(cors(
     {
-        origin: "http://localhost:5173",
+        origin: "https://hotel-booking-system-6svkxeges-sudiptodas-projects.vercel.app",
         credentials: true
     }
 ));
