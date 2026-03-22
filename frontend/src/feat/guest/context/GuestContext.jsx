@@ -1,5 +1,5 @@
 import { createContext, useState } from "react"
-import { addGuest, updateGuest, deleteGuest, getAllGuests } from "../services/Guests.services"
+import { addGuest, updateGuest, deleteGuest, getAllGuests } from "../services/guests.services.js"
 
 export const GuestContext = createContext()
 
