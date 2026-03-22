@@ -5,12 +5,26 @@ const app = express();
 const cookieParser = require("cookie-parser")
 
 app.use(cookieParser())
+
+// Handle CORS properly for production (Vercel)
 app.use(cors(
     {
         origin: process.env.CLIENT_URL,
-        credentials: true
+        credentials: true,
+        methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+        allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],
+        exposedHeaders: ['Set-Cookie']
     }
 ));
+
+// Handle preflight requests explicitly
+app.options("*", cors({
+    origin: process.env.CLIENT_URL,
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Cookie']
+}));
+
 app.use(express.json());
 
 // Serve uploaded files statically
