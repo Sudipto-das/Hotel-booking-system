@@ -12,8 +12,9 @@ const Rooms = () => {
     if (!imageUrl) return '/placeholder-room.jpg';
     // If it's already a full URL, return as is
     if (imageUrl.startsWith('http')) return imageUrl;
-    // Otherwise, prepend the backend URL
-    return `http://localhost:3000${imageUrl}`;
+    // Otherwise, prepend the backend URL from environment variable
+    const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
+    return `${backendUrl}${imageUrl}`;
   };
   const [editingRoom, setEditingRoom] = useState(null);
   const [showModal, setShowModal] = useState(false);

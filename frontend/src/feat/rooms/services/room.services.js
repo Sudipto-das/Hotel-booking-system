@@ -1,8 +1,10 @@
 import axios from "axios";
 
+// Use environment variable for backend URL, fallback to localhost for development
+const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
 
 const api = axios.create({
-    baseURL: "https://hotel-booking-system-kfs9.onrender.com/api/rooms",
+    baseURL: `${backendUrl}/api/rooms`,
     withCredentials: true,
     headers: {
         "Content-Type": "application/json"

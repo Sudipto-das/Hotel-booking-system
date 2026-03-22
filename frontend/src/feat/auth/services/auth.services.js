@@ -2,7 +2,9 @@
 
 import axios from "axios";
 
-const API_URL = "https://hotel-booking-system-kfs9.onrender.com/api/auth/";
+// Use environment variable for backend URL, fallback to localhost for development
+const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
+const API_URL = `${backendUrl}/api/auth/`;
 
 const api = axios.create({
   baseURL: API_URL,
