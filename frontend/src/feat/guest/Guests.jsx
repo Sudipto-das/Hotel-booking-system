@@ -1,11 +1,11 @@
 import { useState } from "react";
-import styles from "./Guests.module.scss";
 import { MOCK_GUESTS } from "./guest";
-import { StatCard,StatusBadge } from "./components/Cards";
+import { StatCard} from "./components/Cards";
 import { GuestRow } from "./components/GuestsRow";
 import { GuestDetailPanel } from "./components/GuestDetailPanel";
 import { AddGuestModal } from "./components/AddGuestModal";
 import { STATUS_LABELS } from "./guest";
+import styles from './guests.module.scss'
 
 // ── Main Page ─────────────────────────────────────────────────────────────────
 

@@ -2,7 +2,7 @@
 
 import axios from "axios";
 
-const API_URL = "http://localhost:3000/api/auth/";
+const API_URL = "https://hotel-booking-system-kfs9.onrender.com/api/auth/";
 
 const api = axios.create({
   baseURL: API_URL,

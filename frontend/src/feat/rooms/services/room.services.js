@@ -2,7 +2,7 @@ import axios from "axios";
 
 
 const api = axios.create({
-    baseURL: "http://localhost:3000/api/rooms",
+    baseURL: "https://hotel-booking-system-kfs9.onrender.com/api/rooms",
     withCredentials: true,
     headers: {
         "Content-Type": "application/json"
