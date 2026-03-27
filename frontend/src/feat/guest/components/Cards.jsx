@@ -1,5 +1,5 @@
 import styles from "../guests.module.scss";
-import { STATUS_LABELS } from "../guest";
+
 
 export function StatCard({ label, value, icon }) {
   return (
@@ -14,7 +14,7 @@ export function StatCard({ label, value, icon }) {
 export function StatusBadge({ status }) {
   return (
     <span className={`${styles.badge} ${styles[`badge--${status}`]}`}>
-      {STATUS_LABELS[status]}
+      {status}
     </span>
   );
 }

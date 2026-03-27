@@ -1,0 +1,814 @@
+@use '../../../styles/_variables' as v;
+@use '../../../styles/__mixins' as m;
+
+// ── Modal size override ────────────────────────────────────
+.modal {
+  max-width: 560px;
+}
+
+.modalTag {
+  font-size: 0.6rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: v.$gold;
+  font-weight: 500;
+  margin-bottom: 0.3rem;
+}
+
+// ── Steps ─────────────────────────────────────────────────
+.stepsWrapper {
+  padding: 1.25rem 1.5rem 0;
+  background: v.$surface;
+  border-bottom: 1px solid v.$border;
+
+  @include m.sm {
+    padding: 1rem 1rem 0;
+  }
+}
+
+.steps {
+  display: flex;
+  align-items: flex-start;
+  padding-bottom: 1.25rem;
+  gap: 0;
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  position: relative;
+}
+
+.stepDot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1.5px solid v.$border;
+  background: v.$surface;
+  color: v.$muted;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+  font-weight: 600;
+  flex-shrink: 0;
+  transition: all 0.25s;
+
+  svg {
+    width: 13px;
+    height: 13px;
+  }
+}
+
+.stepLabel {
+  position: absolute;
+  top: calc(100% + 0.35rem);
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: v.$muted;
+  white-space: nowrap;
+  transition: color 0.25s;
+
+  @include m.sm {
+    display: none;
+  }
+}
+
+.stepLine {
+  flex: 1;
+  height: 1px;
+  background: v.$border;
+  margin: 0 0.25rem;
+  transition: background 0.25s;
+}
+
+.stepActive {
+  .stepDot {
+    border-color: v.$gold;
+    background: rgba(v.$gold, 0.1);
+    color: v.$gold;
+  }
+
+  .stepLabel {
+    color: v.$gold;
+  }
+}
+
+.stepDone {
+  .stepDot {
+    border-color: v.$gold;
+    background: v.$gold;
+    color: v.$bg;
+  }
+
+  .stepLabel {
+    color: v.$text;
+  }
+
+  .stepLine {
+    background: v.$gold;
+    opacity: 0.5;
+  }
+}
+
+// ── Step content ──────────────────────────────────────────
+.stepContent {
+  animation: fadeSlide 0.25s ease;
+}
+
+@keyframes fadeSlide {
+  from {
+    opacity: 0;
+    transform: translateX(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+  color: v.$text;
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+
+  svg {
+    width: 17px;
+    height: 17px;
+    stroke: v.$gold;
+  }
+}
+
+// ── Counters ──────────────────────────────────────────────
+.counters {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: 1px solid v.$border;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 1.25rem;
+}
+
+.counter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid v.$border;
+  transition: background 0.15s;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    background: rgba(v.$gold, 0.03);
+  }
+}
+
+.counterInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.counterLabel {
+  font-size: 0.9rem;
+  color: v.$text;
+  font-weight: 500;
+}
+
+.counterSub {
+  font-size: 0.75rem;
+  color: v.$muted;
+}
+
+.counterControls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.counterBtn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: v.$input-bg;
+  border: 1px solid v.$border;
+  border-radius: 50%;
+  color: v.$text;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s, color 0.2s;
+
+  svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  &:hover:not(:disabled) {
+    border-color: v.$gold;
+    background: rgba(v.$gold, 0.1);
+    color: v.$gold;
+  }
+
+  &:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+}
+
+.counterValue {
+  font-family: v.$font-display;
+  font-size: 1.3rem;
+  font-weight: 400;
+  color: v.$text;
+  min-width: 1.5rem;
+  text-align: center;
+}
+
+.guestSummary {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: rgba(v.$gold, 0.06);
+  border: 1px solid rgba(v.$gold, 0.2);
+  border-radius: 3px;
+  font-size: 0.85rem;
+  color: v.$gold;
+
+  svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
+}
+
+// ── Nights badge ──────────────────────────────────────────
+.nightsBadge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: rgba(v.$gold, 0.06);
+  border: 1px solid rgba(v.$gold, 0.2);
+  border-radius: 3px;
+  font-size: 0.85rem;
+  color: v.$gold;
+  margin-top: 0.25rem;
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+// ── Add-on grid ───────────────────────────────────────────
+.addonGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+
+  @include m.sm {
+    grid-template-columns: 1fr;
+  }
+}
+
+.addonCard {
+  position: relative;
+  padding: 1rem;
+  background: v.$input-bg;
+  border: 1px solid v.$border;
+  border-radius: 4px;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s, transform 0.15s;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+
+  &:hover {
+    border-color: rgba(v.$gold, 0.4);
+    transform: translateY(-1px);
+  }
+}
+
+.addonSelected {
+  border-color: v.$gold !important;
+  background: rgba(v.$gold, 0.06) !important;
+}
+
+.addonCheck {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid v.$border;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+
+  svg {
+    width: 10px;
+    height: 10px;
+    stroke: transparent;
+  }
+
+  .addonSelected & {
+    border-color: v.$gold;
+    background: v.$gold;
+
+    svg {
+      stroke: v.$bg;
+    }
+  }
+}
+
+.addonLabel {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: v.$text;
+}
+
+.addonDesc {
+  font-size: 0.75rem;
+  color: v.$muted;
+}
+
+.addonPrice {
+  font-size: 0.72rem;
+  color: v.$gold;
+  font-weight: 500;
+  margin-top: 0.25rem;
+}
+
+// ── Textarea ──────────────────────────────────────────────
+.textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: v.$input-bg;
+  border: 1px solid v.$border;
+  border-radius: 3px;
+  color: v.$text;
+  font-family: v.$font-body;
+  font-size: 0.9rem;
+  outline: none;
+  resize: vertical;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+
+  &::placeholder {
+    color: v.$muted;
+  }
+
+  &:focus {
+    border-color: rgba(v.$gold, 0.6);
+    box-shadow: 0 0 0 3px rgba(v.$gold, 0.08);
+  }
+}
+
+// ── Summary ───────────────────────────────────────────────
+.summary {
+  background: v.$input-bg;
+  border: 1px solid v.$border;
+  border-radius: 4px;
+  padding: 1.25rem;
+  margin-top: 1.25rem;
+}
+
+.summaryTitle {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: v.$muted;
+  margin-bottom: 1rem;
+}
+
+.summaryRow {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: v.$muted;
+  margin-bottom: 0.6rem;
+
+  span:last-child {
+    color: v.$text;
+    font-weight: 500;
+  }
+}
+
+.summaryDivider {
+  height: 1px;
+  background: v.$border;
+  margin: 0.75rem 0;
+}
+
+.summaryTotal {
+  font-size: 1rem !important;
+  font-weight: 600;
+
+  span {
+    color: v.$text !important;
+  }
+
+  span:last-child {
+    color: v.$gold !important;
+    font-family: v.$font-display;
+    font-size: 1.25rem;
+  }
+}
+
+.totalHighlight {
+  color: v.$gold;
+  font-family: v.$font-display;
+  font-size: 1.1rem;
+}
+
+// ── Footer ────────────────────────────────────────────────
+.footer {
+  padding: 1.25rem 1.5rem;
+
+  @include m.sm {
+    padding: 1rem;
+  }
+}
+
+// ── Success screen ────────────────────────────────────────
+.successScreen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 3rem 2rem;
+  gap: 1rem;
+
+  h2 {
+    font-family: v.$font-display;
+    font-size: 1.75rem;
+    font-weight: 300;
+    color: v.$text;
+    margin: 0;
+  }
+
+  p {
+    color: v.$muted;
+    font-size: 0.9rem;
+    margin: 0;
+
+    strong {
+      color: v.$text;
+    }
+  }
+
+  button {
+    margin-top: 0.5rem;
+    width: 100%;
+    max-width: 240px;
+  }
+}
+
+.successIcon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(v.$gold, 0.12);
+  border: 1px solid rgba(v.$gold, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: pulse 0.5s ease;
+
+  svg {
+    width: 30px;
+    height: 30px;
+    stroke: v.$gold;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.successDetails {
+  width: 100%;
+  max-width: 320px;
+  margin-top: 0.5rem;
+}
+
+.successRow {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid v.$border;
+  font-size: 0.85rem;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  span:first-child {
+    color: v.$muted;
+  }
+
+  strong {
+    color: v.$text;
+    font-weight: 500;
+  }
+}
+
+// ── Guest Search Dropdown ─────────────────────────────────
+.guestSearchContainer {
+  position: relative;
+  margin-bottom: 1.25rem;
+}
+
+.searchInputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  svg {
+    position: absolute;
+    left: 1rem;
+    width: 18px;
+    height: 18px;
+    stroke: v.$muted;
+    pointer-events: none;
+  }
+}
+
+.searchInput {
+  width: 100%;
+  padding: 0.875rem 1rem 0.875rem 2.75rem;
+  background: v.$input-bg;
+  border: 1px solid v.$border;
+  border-radius: 4px;
+  color: v.$text;
+  font-family: v.$font-body;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+
+  &::placeholder {
+    color: v.$muted;
+  }
+
+  &:focus {
+    border-color: rgba(v.$gold, 0.6);
+    box-shadow: 0 0 0 3px rgba(v.$gold, 0.08);
+  }
+}
+
+.guestDropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: v.$surface;
+  border: 1px solid v.$border;
+  border-radius: 4px;
+  max-height: 240px;
+  overflow-y: auto;
+  z-index: 10;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.guestOption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.875rem 1rem;
+  cursor: pointer;
+  transition: background 0.15s;
+  border-bottom: 1px solid v.$border;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    background: rgba(v.$gold, 0.06);
+  }
+}
+
+.guestOptionSelected {
+  background: rgba(v.$gold, 0.1) !important;
+
+  svg {
+    width: 16px;
+    height: 16px;
+    stroke: v.$gold;
+  }
+}
+
+.guestOptionInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.guestOptionName {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: v.$text;
+}
+
+.guestOptionContact {
+  font-size: 0.75rem;
+  color: v.$muted;
+}
+
+.noGuestsFound {
+  padding: 1.5rem 1rem;
+  text-align: center;
+  color: v.$muted;
+  font-size: 0.85rem;
+}
+
+.selectedGuestCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  background: rgba(v.$gold, 0.06);
+  border: 1px solid rgba(v.$gold, 0.2);
+  border-radius: 4px;
+  margin-top: 1rem;
+}
+
+.selectedGuestInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+
+  svg {
+    width: 20px;
+    height: 20px;
+    stroke: v.$gold;
+    flex-shrink: 0;
+  }
+
+  div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+}
+
+.selectedGuestName {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: v.$text;
+}
+
+.selectedGuestContact {
+  font-size: 0.75rem;
+  color: v.$muted;
+}
+
+.removeGuestBtn {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid v.$border;
+  border-radius: 50%;
+  color: v.$muted;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  &:hover {
+    border-color: #e74c3c;
+    color: #e74c3c;
+    background: rgba(231, 76, 60, 0.1);
+  }
+}
+
+// ── Payment Method Selection ──────────────────────────────
+.paymentMethodSection {
+  margin-bottom: 1.5rem;
+}
+
+.paymentMethodLabel {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: v.$text;
+  margin-bottom: 0.75rem;
+}
+
+.paymentMethodOptions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+
+  @include m.sm {
+    grid-template-columns: 1fr;
+  }
+}
+
+.paymentMethodBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: v.$input-bg;
+  border: 1px solid v.$border;
+  border-radius: 4px;
+  color: v.$text;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  svg {
+    width: 20px;
+    height: 20px;
+    stroke: v.$muted;
+  }
+
+  &:hover {
+    border-color: rgba(v.$gold, 0.4);
+  }
+}
+
+.paymentMethodBtnActive {
+  border-color: v.$gold !important;
+  background: rgba(v.$gold, 0.06) !important;
+
+  svg {
+    stroke: v.$gold !important;
+  }
+}
+
+.onlinePaymentForm {
+  animation: fadeSlide 0.25s ease;
+}
+
+.offlinePaymentInfo {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.25rem;
+  background: rgba(v.$gold, 0.06);
+  border: 1px solid rgba(v.$gold, 0.2);
+  border-radius: 4px;
+  margin-bottom: 1.25rem;
+
+  svg {
+    width: 24px;
+    height: 24px;
+    stroke: v.$gold;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+  }
+
+  h4 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: v.$text;
+    margin: 0 0 0.35rem 0;
+  }
+
+  p {
+    font-size: 0.8rem;
+    color: v.$muted;
+    margin: 0;
+    line-height: 1.5;
+  }
+}

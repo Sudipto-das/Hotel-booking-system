@@ -1,6 +1,26 @@
+import { useState } from "react";
 import styles from "../guests.module.scss";
+import { useGuest } from "../hooks/useGuest";
 
 export function AddGuestModal({ onClose }) {
+  const { createGuest } = useGuest();
+  const [formData, setFormData] = useState({
+    name: "",
+    phone: ""
+  })
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value
+    }))
+  }
+
+  const handleCreateGuest = async () => {
+    await createGuest(formData);
+    onClose()
+  }
   return (
     <div className={styles.modal}>
       <div className={styles["modal__tag"]}>New Entry</div>
@@ -8,32 +28,25 @@ export function AddGuestModal({ onClose }) {
 
       <div className={styles["modal__form"]}>
         {[
-          { label: "Full Name",     placeholder: "e.g. Eleanor Voss"    },
-          { label: "Email Address", placeholder: "e.g. guest@email.com" },
-          { label: "Room",          placeholder: "e.g. Suite 204"       },
+          { name: "name", label: "Full Name", placeholder: "e.g. Eleanor Voss" },
+          { name: "phone", label: "Phone Number", placeholder: "e.g. 8116181009" },
+
         ].map((field) => (
           <div key={field.label} className={styles["form-group"]}>
             <label>{field.label}</label>
-            <input type="text" placeholder={field.placeholder} />
+            <input type="text"
+              name={field.name}
+              placeholder={field.placeholder}
+              value={formData[field.name]}
+              onChange={handleChange} />
           </div>
         ))}
-
-        <div className={styles["modal__dates"]}>
-          <div className={styles["form-group"]}>
-            <label>Check-In</label>
-            <input type="date" />
-          </div>
-          <div className={styles["form-group"]}>
-            <label>Check-Out</label>
-            <input type="date" />
-          </div>
-        </div>
 
         <div className={styles["modal__actions"]}>
           <button className={styles["btn-ghost"]} onClick={onClose}>
             Cancel
           </button>
-          <button className={styles["btn-primary"]} onClick={onClose}>
+          <button className={styles["btn-primary"]} onClick={handleCreateGuest}>
             Register Guest
           </button>
         </div>

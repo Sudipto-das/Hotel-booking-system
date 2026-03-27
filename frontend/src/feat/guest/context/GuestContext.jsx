@@ -1,4 +1,4 @@
-import { createContext, useState} from "react";
+import { createContext, useEffect, useState} from "react";
 import { addGuest, updateGuest, deleteGuest, getAllGuests } from "../services/guests.services.js"
 
 export const GuestContext = createContext()
@@ -48,6 +48,10 @@ export const GuestContextProvider = ({ children }) => {
 
         }
     }
+
+    useEffect(()=>{
+        fetchGuests()
+    },[])
     return (
         <GuestContext.Provider value={{ guests, setGuests, loading, fetchGuests, createGuest, editGuest, removeGuest }}>
             {children}

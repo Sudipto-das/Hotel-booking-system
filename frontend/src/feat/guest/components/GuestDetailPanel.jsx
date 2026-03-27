@@ -2,7 +2,7 @@
 import styles from "../guests.module.scss";
 import { InfoField } from "./InfoFields";
 import { StatusBadge } from "./Cards";
-
+import { FormatDate } from "../../../utils/dateformat";
 export function GuestDetailPanel({ guest, onClose }) {
   if (!guest) return null;
 
@@ -24,8 +24,8 @@ export function GuestDetailPanel({ guest, onClose }) {
 
         <InfoField label="Email">{guest.email}</InfoField>
         <InfoField label="Room">{guest.room}</InfoField>
-        <InfoField label="Check-In">{guest.checkIn}</InfoField>
-        <InfoField label="Check-Out">{guest.checkOut}</InfoField>
+        <InfoField label="Check-In">{FormatDate(guest.checkIn)}</InfoField>
+        <InfoField label="Check-Out">{FormatDate(guest.checkOut)}</InfoField>
 
         <div className={styles["panel__divider"]} />
 

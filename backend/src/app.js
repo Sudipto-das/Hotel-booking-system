@@ -5,7 +5,7 @@ const app = express();
 const cookieParser = require("cookie-parser");
 
 const corsOptions = {
-  origin: process.env.CLIENT_URL, // "https://hotel-booking-system-6svkxeges-sudiptodas-projects.vercel.app"
+  origin: process.env.CLIENT_URL, 
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
   allowedHeaders: ["Content-Type", "Authorization"],

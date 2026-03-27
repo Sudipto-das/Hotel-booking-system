@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import styles from './Rooms.module.scss';
-import { roomTypes,statusFilters } from './room';
+import { roomTypes, statusFilters } from './room';
 import AddNewRoomModal from './components/addNewRoomModal';
 import { useRoom } from './hooks/useRoom';
-
+import BookingModal from './components/BookingModal';
 const Rooms = () => {
-  const {rooms, setRooms,fetchRooms} = useRoom();
-  
+  const { rooms, setRooms, fetchRooms } = useRoom();
+
   // Helper function to get full image URL
   const getImageUrl = (imageUrl) => {
     if (!imageUrl) return '/placeholder-room.jpg';
@@ -18,10 +18,11 @@ const Rooms = () => {
   };
   const [editingRoom, setEditingRoom] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [showBookingModal, setShowBookingModal] = useState(false)
   const [typeFilter, setTypeFilter] = useState('All');
   const [statusFilter, setStatusFilter] = useState('All');
   const [searchTerm, setSearchTerm] = useState('');
-  
+
 
   useEffect(() => {
     fetchRooms();
@@ -30,7 +31,7 @@ const Rooms = () => {
   // Filter rooms
   const filteredRooms = rooms.filter(room => {
     const matchesSearch = room.roomNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          room.type.toLowerCase().includes(searchTerm.toLowerCase());
+      room.type.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesType = typeFilter === 'All' || room.type === typeFilter;
     const matchesStatus = statusFilter === 'All' || room.status === statusFilter;
     return matchesSearch && matchesType && matchesStatus;
@@ -40,7 +41,7 @@ const Rooms = () => {
   const stats = {
     total: rooms.length,
     available: rooms.filter(r => r.status === 'Available').length,
-    booked: rooms.filter(r => r.status === 'Booked').length,
+    booked: rooms.filter(r => r.status === 'occupied').length,
     maintenance: rooms.filter(r => r.status === 'Maintenance').length
   };
 
@@ -57,6 +58,9 @@ const Rooms = () => {
     setEditingRoom(null);
     setShowModal(true);
   };
+  const handleBookingRoom = () => {
+    setShowBookingModal(true);
+  }
 
   const handleUpdateRoom = (room) => {
     setEditingRoom(room);
@@ -215,8 +219,9 @@ const Rooms = () => {
                   )}
                 </div>
                 <div className={styles.roomActions}>
-                  <button className={styles.viewButton} onClick={() => handleUpdateRoom(room)}>View Details</button>
-                  <button className={styles.editButton}>
+                  <button className={styles.viewButton} onClick={handleBookingRoom}>Book Now</button>
+                  <button className={styles.editButton}
+                    onClick={() => handleUpdateRoom(room)}>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
                       <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
                       <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
@@ -248,6 +253,9 @@ const Rooms = () => {
           editingRoom={editingRoom}
           setShowModal={setShowModal}
         />
+      )}
+      {showBookingModal && (
+        <BookingModal setShowBookingModal={setShowBookingModal} />
       )}
     </div>
   );

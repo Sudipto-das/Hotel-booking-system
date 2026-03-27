@@ -1,24 +1,27 @@
 import { useState } from "react";
 import { MOCK_GUESTS } from "./guest";
-import { StatCard} from "./components/Cards";
+import { StatCard } from "./components/Cards";
 import { GuestRow } from "./components/GuestsRow";
 import { GuestDetailPanel } from "./components/GuestDetailPanel";
 import { AddGuestModal } from "./components/AddGuestModal";
 import { STATUS_LABELS } from "./guest";
 import styles from './guests.module.scss'
+import { useGuest } from "./hooks/useGuest";
 
 // ── Main Page ─────────────────────────────────────────────────────────────────
 
 export default function GuestsPage() {
-  const [search,       setSearch]       = useState("");
+  const { guests } = useGuest()
+  const [search, setSearch] = useState("");
   const [filterStatus, setFilterStatus] = useState("all");
-  const [selected,     setSelected]     = useState(null);
-  const [showModal,    setShowModal]    = useState(false);
+  const [selected, setSelected] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
-  const filtered = MOCK_GUESTS.filter((g) => {
+
+  const filtered = guests.filter((g) => {
     const q = search.toLowerCase();
     const matchSearch =
-      g.name.toLowerCase().includes(q)  ||
+      g.name.toLowerCase().includes(q) ||
       g.email.toLowerCase().includes(q) ||
       g.room.toLowerCase().includes(q);
     const matchStatus = filterStatus === "all" || g.status === filterStatus;
@@ -26,15 +29,19 @@ export default function GuestsPage() {
   });
 
   const counts = {
-    total:         MOCK_GUESTS.length,
-    "checked-in":  MOCK_GUESTS.filter((g) => g.status === "checked-in").length,
-    reserved:      MOCK_GUESTS.filter((g) => g.status === "reserved").length,
-    "checked-out": MOCK_GUESTS.filter((g) => g.status === "checked-out").length,
-    vip:           MOCK_GUESTS.filter((g) => g.vip).length,
+    total: guests.length,
+    "created":guests.filter((g) => g.status === "created").length,
+    "checked-in": guests.filter((g) => g.status === "checked-in").length,
+    "reserved": guests.filter((g) => g.status === "reserved").length,
+    "checked-out": guests.filter((g) => g.status === "checked-out").length,
+    vip: guests.filter((g) => g.vip).length,
   };
 
   const handleRowSelect = (guest) =>
-    setSelected((prev) => (prev?.id === guest.id ? null : guest));
+    setSelected((prev) => (prev?.id === guest._id ? null : guest));
+
+
+  
 
   return (
     <div className={styles.page}>
@@ -55,11 +62,11 @@ export default function GuestsPage() {
 
       {/* ── Stat Cards ── */}
       <div className={styles.stats}>
-        <StatCard label="Total Guests" value={counts.total}           icon="🛎" />
-        <StatCard label="Checked In"   value={counts["checked-in"]}  icon="🏨" />
-        <StatCard label="Reserved"     value={counts.reserved}        icon="📋" />
-        <StatCard label="Checked Out"  value={counts["checked-out"]} icon="✓"  />
-        <StatCard label="VIP Guests"   value={counts.vip}             icon="★"  />
+        <StatCard label="Total Guests" value={counts.total} icon="🛎" />
+        <StatCard label="Checked In" value={counts["checked-in"]} icon="🏨" />
+        <StatCard label="Reserved" value={counts.reserved} icon="📋" />
+        <StatCard label="Checked Out" value={counts["checked-out"]} icon="✓" />
+        <StatCard label="VIP Guests" value={counts.vip} icon="★" />
       </div>
 
       {/* ── Toolbar ── */}

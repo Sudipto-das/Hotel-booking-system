@@ -1,19 +1,21 @@
 const { model } = require('mongoose');
 const Booking = require('../models/booking.model.js');
+const Room = require('../models/room.model.js')
 
 
 
 // Create and Save a new Booking
 
-const createBookingController = async(req,res)=>{
-    try{
-        const {checkOutDate,totalPrice,roomId,userId,clientId} = req.body;
+const createBookingController = async (req, res) => {
+    try {
+        const { checkOutDate, totalPrice, roomId, userId, clientId, roomStatus } = req.body;
         const booking = new Booking({
-            checkInDate:Date.now(),checkOutDate,totalPrice,roomId,userId,clientId
+            checkInDate: Date.now(), checkOutDate, totalPrice, roomId, userId, clientId
         });
+        await Room.findByIdAndUpdate(roomId, { roomStatus }, { returnDocument: "after" })
         const data = await booking.save();
-        res.status(201).json({message:"Booking created successfully",data});
-    } catch(err){
+        res.status(201).json({ message: "Booking created successfully", data });
+    } catch (err) {
         res.status(500).send({
             message: err.message || "Some error occurred while creating the Booking."
         });
@@ -22,14 +24,14 @@ const createBookingController = async(req,res)=>{
 
 // Retrieve all Bookings from the database.
 
-const getAllBookingsController = async(req,res)=>{
-    try{
+const getAllBookingsController = async (req, res) => {
+    try {
         const data = await Booking.find().populate('roomId').populate('userId').populate('clientId');
-        res.status(200).json({message:"Bookings retrieved successfully",data});
-    } catch(err){
-        res.status(500).send({message:err.message||"Some error occurred while retrieving Bookings."});
+        res.status(200).json({ message: "Bookings retrieved successfully", data });
+    } catch (err) {
+        res.status(500).send({ message: err.message || "Some error occurred while retrieving Bookings." });
     }
 }
 
 
-module.exports = {createBookingController, getAllBookingsController}
+module.exports = { createBookingController, getAllBookingsController }
