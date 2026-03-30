@@ -1,9 +1,10 @@
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import styles from "../Rooms.module.scss";
 import bStyles from "./BookingModal.module.scss";
 import { Icon } from "./icons";
 import { Steps } from "./StepIndicator";
 import { GuestSearchDropdown } from "./GuestsSearchDropdown";
+
 
 // ── Mock Guest Data (for UI demonstration) ───────────────
 const mockGuests = [
@@ -19,6 +20,7 @@ const mockGuests = [
 
 // ── Main Modal ────────────────────────────────────────────
 const BookingModal = ({ room, setShowBookingModal, onConfirm }) => {
+  
   const allGuests = mockGuests;
   const [step, setStep] = useState(0);
   const [selectedGuest, setSelectedGuest] = useState(null);
@@ -36,7 +38,7 @@ const BookingModal = ({ room, setShowBookingModal, onConfirm }) => {
     return Math.max(0, Math.round(diff / 86400000));
   })();
 
-  const baseRate = room?.price ?? 280;
+  const baseRate = room?.pricePerNight ?? 280;
   const addonsTotal =
     (addons.breakfast ? 28 : 0) +
     (addons.parking ? 18 : 0) +
