@@ -6,68 +6,78 @@ export const RoomContext = createContext();
 
 export const RoomProvider = ({ children }) => {
     const [rooms, setRooms] = useState([]);
-    const [bookingLoading,setBookingLoading] = useState(false);
-    const [bookingError,setBookingError]=useState(null)
+    const [loading, setLoading] = useState(false);
+    const [bookingError, setBookingError] = useState(null)
 
     const handleAddRoom = async (newRoom, imageFile = null) => {
+        setLoading(true)
         try {
             const result = await addRoom(newRoom, imageFile);
             setRooms(prevRooms => [...prevRooms, result.room]);
         } catch (err) {
             console.error("Failed to add room:", err);
+        } finally {
+            setLoading(false)
         }
 
     };
     const handleUpdateRoom = async (updatedRoom, imageFile = null) => {
+        setLoading(true)
         try {
             const result = await updateRoom(updatedRoom._id || updatedRoom.id, updatedRoom, imageFile);
             setRooms(prevRooms => prevRooms.map(r => (r._id || r.id) === (result.room._id || result.room.id) ? result.room : r));
         } catch (err) {
             console.error("Failed to update room:", err);
 
+        } finally {
+            setLoading(false)
         }
 
     }
     const handleDeleteRoom = async (roomId) => {
+        setLoading(true)
         try {
             await deleteRoom(roomId);
             setRooms(prevRooms => prevRooms.filter(r => r.id !== roomId));
         } catch (err) {
             console.error("Failed to delete room:", err);
+        } finally {
+            setLoading(false)
         }
     }
     const fetchRooms = async () => {
+        setLoading(true)
         try {
             const roomsData = await getAllRooms();
             setRooms(roomsData.rooms);
         } catch (err) {
             console.error("Failed to fetch rooms:", err);
+        } finally {
+            setLoading(false)
         }
     };
     const handleBookingRoom = async (bookingData) => {
         setBookingError(null);
-        setBookingLoading(true)
+        setLoading(true)
         try {
             const result = await createBooking(bookingData);
             return result
         } catch (err) {
             setBookingError(err)
             console.log(err);
-        }finally{
-            setBookingLoading(false)
+        } finally {
+            setLoading(false)
         }
     }
 
 
-    useEffect(() => {
-        fetchRooms();
-    },[])
+
 
 
 
 
     return (
-        <RoomContext.Provider value={{ rooms, setRooms, handleAddRoom, handleUpdateRoom, handleDeleteRoom, fetchRooms,handleBookingRoom,bookingLoading,bookingError }}>
+        <RoomContext.Provider value={{ rooms, loading, setRooms, handleAddRoom, handleUpdateRoom, handleDeleteRoom, fetchRooms, handleBookingRoom, bookingError }}>
             {children}
         </RoomContext.Provider>
     )

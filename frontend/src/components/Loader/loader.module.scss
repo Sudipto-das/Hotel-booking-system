@@ -1,0 +1,130 @@
+@use '../../styles/_variables' as v;
+
+@keyframes ld-spin    { to { transform: rotate(360deg);  } }
+@keyframes ld-spin-r  { to { transform: rotate(-360deg); } }
+@keyframes ld-breathe {
+  0%, 100% { opacity: 0.3; transform: scale(0.85); }
+  50%      { opacity: 1;   transform: scale(1);    }
+}
+@keyframes ld-shimmer {
+  0%   { background-position: -260% center; }
+  100% { background-position:  260% center; }
+}
+@keyframes ld-sweep {
+  0%   { left: -50%; }
+  100% { left: 115%; }
+}
+@keyframes ld-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.loader-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.75rem;
+  background: v.$bg;
+  animation: ld-fade 0.25s ease both;
+
+  // spinner
+  &__ring {
+    position: relative;
+    width: 72px;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid transparent;
+    }
+
+    // outer — gold arc
+    &::before {
+      inset: 0;
+      border-top-color:   v.$gold;
+      border-right-color: rgba(v.$gold, 0.18);
+      animation: ld-spin 1.9s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    }
+
+    // inner — counter spin
+    &::after {
+      inset: 14px;
+      border-bottom-color: rgba(v.$gold, 0.4);
+      border-left-color:   rgba(v.$gold, 0.1);
+      animation: ld-spin-r 2.7s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    }
+  }
+
+  &__dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: v.$gold;
+    animation: ld-breathe 2.2s ease-in-out infinite;
+  }
+
+  // label + rule
+  &__label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  &__text {
+    font-family:    v.$font-body;
+    font-size:      0.65rem;
+    font-weight:    500;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    background: linear-gradient(
+      90deg,
+      rgba(v.$gold, 0.3) 0%,
+      v.$gold-light      38%,
+      v.$gold            50%,
+      v.$gold-light      62%,
+      rgba(v.$gold, 0.3) 100%
+    );
+    background-size: 260% auto;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    animation: ld-shimmer 3s linear infinite;
+  }
+
+  &__rule {
+    width: 80px;
+    height: 1px;
+    background: v.$border;
+    position: relative;
+    overflow: hidden;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0; height: 100%; width: 50%;
+      background: linear-gradient(90deg, transparent, v.$gold, transparent);
+      animation: ld-sweep 1.9s ease-in-out infinite;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loader-overlay {
+    animation: none;
+    &__ring::before, &__ring::after { animation: none; opacity: 0.5; }
+    &__dot   { animation: none; }
+    &__text  { animation: none; background: none; color: v.$gold; }
+    &__rule::after { animation: none; }
+  }
+}

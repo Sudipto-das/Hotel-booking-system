@@ -2,6 +2,7 @@
 
 import { useAuth } from "../hooks/useAuth";
 import { useState } from "react";
+import Loader from "../../../components/Loader/Loader";
 const Register = () => {
 
 
@@ -52,7 +53,7 @@ const Register = () => {
             <label htmlFor="password">Password</label>
             <input type="password" id="password" name="password" placeholder="Min. 8 characters" onChange={handleChange} required minLength={8} />
           </div>
-          <button type="submit" className="btn-primary">{loading ? "Registering..." : "Register"}</button>
+          <button type="submit" className="btn-primary">{loading ? <Loader /> : "Register"}</button>
         </form>
         <p className="auth-card__footer">Already have an account? <a href="/">Sign in</a></p>
       </div>

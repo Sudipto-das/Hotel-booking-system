@@ -7,11 +7,11 @@ import { AddGuestModal } from "./components/AddGuestModal";
 import { STATUS_LABELS } from "./guest";
 import styles from './guests.module.scss'
 import { useGuest } from "./hooks/useGuest";
-
+import Loader from "../../components/Loader/Loader";
 // ── Main Page ─────────────────────────────────────────────────────────────────
 
 export default function GuestsPage() {
-  const { guests, fetchGuests } = useGuest()
+  const { guests, fetchGuests, loading } = useGuest()
   const [search, setSearch] = useState("");
   const [filterStatus, setFilterStatus] = useState("all");
   const [selected, setSelected] = useState(null);
@@ -44,7 +44,7 @@ export default function GuestsPage() {
     fetchGuests();
   }, [])
 
-
+  if (loading) return <Loader label="Fetching guests" />
   return (
     <div className={styles.page}>
 

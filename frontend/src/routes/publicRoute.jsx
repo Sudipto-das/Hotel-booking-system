@@ -1,7 +1,7 @@
 
 import { useAuth } from "../feat/auth/hooks/useAuth";
 import { Navigate, useLocation } from "react-router";
-
+import Loader from "../components/Loader/Loader";
 const PublicRoute = ({ children }) => {
     const { user, loading } = useAuth();
     const location = useLocation();
@@ -10,7 +10,7 @@ const PublicRoute = ({ children }) => {
     const from = location.state?.from || "/dashboard";
 
     if (loading) {
-        return <div>Loading...</div>;
+        return <Loader />
     }
     return !user ? children : <Navigate to={from} replace />;
 }
