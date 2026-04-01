@@ -45,7 +45,8 @@ export const RoomProvider = ({ children }) => {
             setLoading(false)
         }
     }
-    const fetchRooms = async () => {
+    const fetchRooms = async (force = false) => {
+        if(rooms.length >0 && !force) return ;
         setLoading(true)
         try {
             const roomsData = await getAllRooms();
@@ -69,11 +70,6 @@ export const RoomProvider = ({ children }) => {
             setLoading(false)
         }
     }
-
-
-
-
-
 
 
     return (

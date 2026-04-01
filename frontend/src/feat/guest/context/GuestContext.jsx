@@ -8,7 +8,8 @@ export const GuestContextProvider = ({ children }) => {
     const [guests, setGuests] = useState([]);
     const [loading, setLoading] = useState(false)
 
-    const fetchGuests = async () => {
+    const fetchGuests = async (force = false) => {
+        if (guests.length > 0 && !force) return;
         setLoading(true);
         try {
 

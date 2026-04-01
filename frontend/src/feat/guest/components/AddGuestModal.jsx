@@ -3,7 +3,7 @@ import styles from "../guests.module.scss";
 import { useGuest } from "../hooks/useGuest";
 
 export function AddGuestModal({ onClose }) {
-  const { createGuest } = useGuest();
+  const { createGuest,fetchGuests } = useGuest();
   const [formData, setFormData] = useState({
     name: "",
     phone: ""
@@ -19,6 +19,7 @@ export function AddGuestModal({ onClose }) {
 
   const handleCreateGuest = async () => {
     await createGuest(formData);
+    fetchGuests(true)
     onClose()
   }
   return (

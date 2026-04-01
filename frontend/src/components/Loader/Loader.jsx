@@ -1,14 +1,14 @@
-import './loader.module.scss'
+import styles from './loader.module.scss'
 
 const Loader = ({ label = 'Loading' }) => (
-  <div className="loader-overlay">
-    <div className="loader-overlay__ring">
-      <div className="loader-overlay__dot" />
+  <div className={styles.overlay}>
+    <div className={styles.ring}>
+      <div className={styles.dot} />
     </div>
     {label && (
-      <div className="loader-overlay__label">
-        <span className="loader-overlay__text">{label}</span>
-        <div  className="loader-overlay__rule" />
+      <div className={styles.label}>
+        <span className={styles.text}>{label}</span>
+        <div className={styles.rule} />
       </div>
     )}
   </div>

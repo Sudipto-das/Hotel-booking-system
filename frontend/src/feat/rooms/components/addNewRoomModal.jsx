@@ -4,7 +4,7 @@ import { useRoom } from '../hooks/useRoom';
 import { useState } from 'react';
 
 const AddRoomModal = ({ editingRoom, setShowModal }) => {
-  const { handleAddRoom, handleUpdateRoom } = useRoom();
+  const { handleAddRoom, handleUpdateRoom,fetchRooms } = useRoom();
 
   const [formData, setFormData] = useState({
     roomNumber: editingRoom?.roomNumber || '',
@@ -59,8 +59,10 @@ const AddRoomModal = ({ editingRoom, setShowModal }) => {
 
     if (editingRoom) {
       handleUpdateRoom({ ...editingRoom, ...roomData }, imageFile);
+      fetchRooms(true)
     } else {
       handleAddRoom(roomData, imageFile);
+      fetchRooms(true)
     }
 
     setShowModal(false);

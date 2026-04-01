@@ -11,10 +11,11 @@ import AddNewRoomModal from './components/addNewRoomModal';
 import BookingModal from './components/BookingModal';
 import RoomCard from './components/RoomCard';
 import { useEffect } from 'react';
+import Loader from '../../components/Loader/Loader';
 
 
 const Rooms = () => {
-  const { rooms,fetchRooms } = useRoom();
+  const { rooms,fetchRooms,loading } = useRoom();
   
   const { filteredRooms, ...filterProps } = useRoomFilters(rooms);
   const {
@@ -30,7 +31,7 @@ const Rooms = () => {
     useEffect(() => {
         fetchRooms();
     },[])
-
+    if(loading) return <Loader label="Fetching rooms" />
   return (
     <div className="page-content">
       <div className={styles.roomsPage}>
