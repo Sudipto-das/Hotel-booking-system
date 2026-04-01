@@ -1,28 +1,35 @@
-import { useEffect } from 'react';
+
 import styles from './Rooms.module.scss';
 import { roomTypes, statusFilters } from './room';
 import { computeStats } from '../../utils/rooms.utils';
 import { useRoom } from './hooks/useRoom';
-import  useRoomFilters  from './hooks/useRoomFilters';
-import useRoomModals  from './hooks/useRoomModals';
+import useRoomFilters from './hooks/useRoomFilters';
+import useRoomModals from './hooks/useRoomModals';
 import RoomStatsGrid from './components/RoomStatsGrid';
 import RoomFilters from './components/RoomFilters';
 import AddNewRoomModal from './components/addNewRoomModal';
 import BookingModal from './components/BookingModal';
 import RoomCard from './components/RoomCard';
+import { useEffect } from 'react';
+
 
 const Rooms = () => {
-  const { rooms, fetchRooms } = useRoom();
+  const { rooms,fetchRooms } = useRoom();
+  
   const { filteredRooms, ...filterProps } = useRoomFilters(rooms);
-  const { 
+  const {
     editingRoom, showModal, setShowModal,
     bookingRoom, showBookingModal, setShowBookingModal,
     openCreateModal, openEditModal, openBookingModal,
   } = useRoomModals();
 
-  useEffect(() => { fetchRooms(); }, []);
+  
 
   const stats = computeStats(rooms);
+
+    useEffect(() => {
+        fetchRooms();
+    },[])
 
   return (
     <div className="page-content">

@@ -1,27 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "../Rooms.module.scss";
 import bStyles from "./BookingModal.module.scss";
 import { Icon } from "./icons";
 import { Steps } from "./StepIndicator";
 import { GuestSearchDropdown } from "./GuestsSearchDropdown";
-
-
-// ── Mock Guest Data (for UI demonstration) ───────────────
-const mockGuests = [
-  { _id: "1", name: "John Smith", email: "john.smith@email.com", phone: "+1 234 567 8900" },
-  { _id: "2", name: "Sarah Johnson", email: "sarah.j@email.com", phone: "+1 234 567 8901" },
-  { _id: "3", name: "Michael Brown", email: "michael.b@email.com", phone: "+1 234 567 8902" },
-  { _id: "4", name: "Emily Davis", email: "emily.d@email.com", phone: "+1 234 567 8903" },
-  { _id: "5", name: "David Wilson", email: "david.w@email.com", phone: "+1 234 567 8904" },
-  { _id: "6", name: "Jessica Taylor", email: "jessica.t@email.com", phone: "+1 234 567 8905" },
-  { _id: "7", name: "Robert Anderson", email: "robert.a@email.com", phone: "+1 234 567 8906" },
-  { _id: "8", name: "Amanda Martinez", email: "amanda.m@email.com", phone: "+1 234 567 8907" },
-];
+import { useGuest } from "../../guest/hooks/useGuest";
+import { useAuth } from "../../auth/hooks/useAuth";
+import { useRoom } from "../hooks/useRoom";
 
 // ── Main Modal ────────────────────────────────────────────
 const BookingModal = ({ room, setShowBookingModal, onConfirm }) => {
-  
-  const allGuests = mockGuests;
+
+  const { guests,fetchGuests } = useGuest()
+  const { user } = useAuth();
+  const { handleBookingRoom } = useRoom()
+
   const [step, setStep] = useState(0);
   const [selectedGuest, setSelectedGuest] = useState(null);
   const [dates, setDates] = useState({ checkIn: "", checkOut: "" });
@@ -30,6 +23,8 @@ const BookingModal = ({ room, setShowBookingModal, onConfirm }) => {
   const [paymentMethod, setPaymentMethod] = useState("online");
   const [payment, setPayment] = useState({ name: "", card: "", expiry: "", cvv: "" });
   const [booked, setBooked] = useState(false);
+
+
 
   // ── derived ──────────────────────────────────────────────
   const nights = (() => {
@@ -55,22 +50,25 @@ const BookingModal = ({ room, setShowBookingModal, onConfirm }) => {
     selectedGuest !== null,
     dates.checkIn && dates.checkOut && nights > 0,
     true, // details optional
-    paymentMethod === "offline" || 
-      (payment.name && payment.card.replace(/\s/g, "").length === 16 && payment.expiry && payment.cvv.length >= 3),
+    paymentMethod === "offline" ||
+    (payment.name && payment.card.replace(/\s/g, "").length === 16 && payment.expiry && payment.cvv.length >= 3),
   ][step];
 
-  const handleConfirm = () => {
-    setBooked(true);
-    onConfirm?.({
-      guest: selectedGuest,
-      dates,
-      addons,
-      paymentMethod,
-      payment: paymentMethod === "online" ? payment : null,
-      total,
-      nights,
-      specialRequests,
-    });
+  const handleConfirm = async () => {
+    const bookingData = {
+      checkOutDate: dates.checkOut,
+      totalPrice: total,
+      roomId: room._id,
+      userId: user._id,
+      clientId: selectedGuest._id,        // guest = client
+      roomStatus: "booked",
+    }
+    const res = await handleBookingRoom(bookingData); // calls context → service → API
+
+    if (res?.data) {
+      setBooked(true);          // triggers your success screen
+      onConfirm?.(res.data);    // notify parent if needed
+    }
   };
 
   const fmtCard = (v) =>
@@ -85,6 +83,10 @@ const BookingModal = ({ room, setShowBookingModal, onConfirm }) => {
       .replace(/\D/g, "")
       .slice(0, 4)
       .replace(/^(\d{2})(\d)/, "$1/$2");
+
+      useEffect(()=>{
+        fetchGuests()
+      },[])
 
   // ── success screen ───────────────────────────────────────
   if (booked) {
@@ -110,7 +112,7 @@ const BookingModal = ({ room, setShowBookingModal, onConfirm }) => {
                 <span>Check-out</span>
                 <strong>{dates.checkOut}</strong>
               </div>
-             
+
               <div className={bStyles.successRow}>
                 <span>Payment</span>
                 <strong>{paymentMethod === "online" ? "Online Payment" : "Pay at Hotel"}</strong>
@@ -120,7 +122,7 @@ const BookingModal = ({ room, setShowBookingModal, onConfirm }) => {
                 <strong className={bStyles.totalHighlight}>${total.toLocaleString()}</strong>
               </div>
             </div>
-            <button className={styles.saveButton} onClick={()=>setShowBookingModal(false)}>
+            <button className={styles.saveButton} onClick={() => setShowBookingModal(false)}>
               Done
             </button>
           </div>
@@ -130,7 +132,7 @@ const BookingModal = ({ room, setShowBookingModal, onConfirm }) => {
   }
 
   return (
-    <div className={styles.modalOverlay} onClick={()=>setShowBookingModal(false)}>
+    <div className={styles.modalOverlay} onClick={() => setShowBookingModal(false)}>
       <div className={`${styles.modal} ${bStyles.modal}`} onClick={(e) => e.stopPropagation()}>
         {/* Header */}
         <div className={styles.modalHeader}>
@@ -138,7 +140,7 @@ const BookingModal = ({ room, setShowBookingModal, onConfirm }) => {
             <div className={bStyles.modalTag}>New Reservation</div>
             <h2>{room?.name ?? "Book a Room"}</h2>
           </div>
-          <button className={styles.closeButton} onClick={()=>setShowBookingModal(false)}>
+          <button className={styles.closeButton} onClick={() => setShowBookingModal(false)}>
             <Icon.Close />
           </button>
         </div>
@@ -158,9 +160,9 @@ const BookingModal = ({ room, setShowBookingModal, onConfirm }) => {
                 <Icon.User />
                 <span>Select Guest</span>
               </div>
-              
+
               <GuestSearchDropdown
-                guests={allGuests}
+                guests={guests}
                 selectedGuest={selectedGuest}
                 onSelect={setSelectedGuest}
               />
@@ -334,7 +336,7 @@ const BookingModal = ({ room, setShowBookingModal, onConfirm }) => {
               Back
             </button>
           ) : (
-            <button className={styles.cancelButton} onClick={()=>setShowBookingModal(false)}>
+            <button className={styles.cancelButton} onClick={() => setShowBookingModal(false)}>
               Cancel
             </button>
           )}

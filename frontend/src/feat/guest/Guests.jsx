@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MOCK_GUESTS } from "./guest";
 import { StatCard } from "./components/Cards";
 import { GuestRow } from "./components/GuestsRow";
@@ -11,7 +11,7 @@ import { useGuest } from "./hooks/useGuest";
 // ── Main Page ─────────────────────────────────────────────────────────────────
 
 export default function GuestsPage() {
-  const { guests } = useGuest()
+  const { guests, fetchGuests } = useGuest()
   const [search, setSearch] = useState("");
   const [filterStatus, setFilterStatus] = useState("all");
   const [selected, setSelected] = useState(null);
@@ -30,7 +30,7 @@ export default function GuestsPage() {
 
   const counts = {
     total: guests.length,
-    "created":guests.filter((g) => g.status === "created").length,
+    "created": guests.filter((g) => g.status === "created").length,
     "checked-in": guests.filter((g) => g.status === "checked-in").length,
     "reserved": guests.filter((g) => g.status === "reserved").length,
     "checked-out": guests.filter((g) => g.status === "checked-out").length,
@@ -40,8 +40,10 @@ export default function GuestsPage() {
   const handleRowSelect = (guest) =>
     setSelected((prev) => (prev?.id === guest._id ? null : guest));
 
+  useEffect(() => {
+    fetchGuests();
+  }, [])
 
-  
 
   return (
     <div className={styles.page}>

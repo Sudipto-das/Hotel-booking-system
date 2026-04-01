@@ -48,10 +48,6 @@ export const GuestContextProvider = ({ children }) => {
 
         }
     }
-
-    useEffect(()=>{
-        fetchGuests()
-    },[])
     return (
         <GuestContext.Provider value={{ guests, setGuests, loading, fetchGuests, createGuest, editGuest, removeGuest }}>
             {children}
