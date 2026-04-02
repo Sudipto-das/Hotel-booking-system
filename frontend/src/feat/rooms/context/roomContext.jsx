@@ -6,6 +6,7 @@ export const RoomContext = createContext();
 
 export const RoomProvider = ({ children }) => {
     const [rooms, setRooms] = useState([]);
+    const [bookingLoading,setBookingLoading] = useState(false)
     const [loading, setLoading] = useState(false);
     const [bookingError, setBookingError] = useState(null)
 
@@ -59,7 +60,7 @@ export const RoomProvider = ({ children }) => {
     };
     const handleBookingRoom = async (bookingData) => {
         setBookingError(null);
-        setLoading(true)
+        setBookingLoading(true)
         try {
             const result = await createBooking(bookingData);
             return result
@@ -67,13 +68,13 @@ export const RoomProvider = ({ children }) => {
             setBookingError(err)
             console.log(err);
         } finally {
-            setLoading(false)
+            setBookingLoading(false)
         }
     }
 
 
     return (
-        <RoomContext.Provider value={{ rooms, loading, setRooms, handleAddRoom, handleUpdateRoom, handleDeleteRoom, fetchRooms, handleBookingRoom, bookingError }}>
+        <RoomContext.Provider value={{ rooms, loading, setRooms, handleAddRoom, handleUpdateRoom, handleDeleteRoom, fetchRooms, handleBookingRoom, bookingError ,bookingLoading}}>
             {children}
         </RoomContext.Provider>
     )

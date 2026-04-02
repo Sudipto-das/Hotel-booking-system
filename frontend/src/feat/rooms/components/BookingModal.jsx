@@ -7,11 +7,12 @@ import { GuestSearchDropdown } from "./GuestsSearchDropdown";
 import { useGuest } from "../../guest/hooks/useGuest";
 import { useAuth } from "../../auth/hooks/useAuth";
 import { useRoom } from "../hooks/useRoom";
+import Loader from "../../../components/Loader/Loader";
 
 // ── Main Modal ────────────────────────────────────────────
-const BookingModal = ({ room, setShowBookingModal, onConfirm }) => {
+const BookingModal = ({ room, setShowBookingModal }) => {
 
-  const { guests,fetchGuests } = useGuest()
+  const { guests, fetchGuests, bookingLoading } = useGuest()
   const { user } = useAuth();
   const { handleBookingRoom } = useRoom()
 
@@ -64,10 +65,8 @@ const BookingModal = ({ room, setShowBookingModal, onConfirm }) => {
       roomStatus: "booked",
     }
     const res = await handleBookingRoom(bookingData); // calls context → service → API
-
     if (res?.data) {
       setBooked(true);          // triggers your success screen
-      onConfirm?.(res.data);    // notify parent if needed
     }
   };
 
@@ -84,14 +83,16 @@ const BookingModal = ({ room, setShowBookingModal, onConfirm }) => {
       .slice(0, 4)
       .replace(/^(\d{2})(\d)/, "$1/$2");
 
-      useEffect(()=>{
-        fetchGuests()
-      },[])
+  useEffect(() => {
+    fetchGuests()
+  }, [])
 
+ 
+  {bookingLoading && <Loader label="Booking ..."/>}
   // ── success screen ───────────────────────────────────────
   if (booked) {
     return (
-      <div className={styles.modalOverlay} onClick={setShowBookingModal(false)}>
+      <div className={styles.modalOverlay} onClick={() => setShowBookingModal(false)}>
         <div className={`${styles.modal} ${bStyles.modal}`} onClick={(e) => e.stopPropagation()}>
           <div className={bStyles.successScreen}>
             <div className={bStyles.successIcon}>
