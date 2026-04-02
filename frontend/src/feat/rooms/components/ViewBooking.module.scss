@@ -1,0 +1,586 @@
+@use '../../../styles/__variables' as v;
+@use '../../../styles/__mixins' as m;
+
+// ── Overlay ───────────────────────────────────────────────────────────────────
+.booking-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(8, 8, 9, 0.85);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+  animation: fadeIn 0.22s ease both; // reuses global fadeIn from __animations
+
+  @include m.sm { padding: 0; align-items: flex-end; }
+}
+
+// ── Modal Shell ───────────────────────────────────────────────────────────────
+.booking-modal {
+  position: relative;
+  width: 100%;
+  max-width: 780px;
+  max-height: 90vh;
+  background: v.$surface;      // #161618 — matches auth-card
+  border: 1px solid v.$border; // #2a2a2e
+  border-radius: 4px;           // matches auth-card
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 1px rgba(v.$gold, 0.06),
+    0 32px 64px rgba(0, 0, 0, 0.55);
+  animation: fadeUp 0.28s ease both; // reuses global fadeUp from __animations
+
+  @include m.sm {
+    max-height: 95vh;
+    border-radius: 4px 4px 0 0;
+    border-bottom: none;
+  }
+
+  // Top gold accent — same pattern as sidebar's ::before
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent 5%, v.$gold 40%, v.$gold-light 60%, transparent 95%);
+    opacity: 0.6;
+    pointer-events: none;
+    z-index: 1;
+  }
+}
+
+// ── Header ────────────────────────────────────────────────────────────────────
+.booking-modal__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 26px 28px 22px;
+  border-bottom: 1px solid v.$border;
+  flex-shrink: 0;
+  gap: 16px;
+
+  @include m.sm { padding: 20px 18px 18px; }
+}
+
+.booking-modal__title-block {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+// Mirrors auth-card__tag
+.booking-modal__eyebrow {
+  font-family: v.$font-body;
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: v.$gold;
+}
+
+// Mirrors auth-card__title
+.booking-modal__title {
+  font-family: v.$font-display;
+  font-size: 1.9rem;
+  font-weight: 300;
+  color: v.$text;
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+
+  @include m.sm { font-size: 1.6rem; }
+}
+
+// Mirrors auth-card__subtitle
+.booking-modal__id {
+  font-family: v.$font-body;
+  font-size: 0.75rem;
+  font-weight: 300;
+  color: v.$muted;
+  letter-spacing: 0.08em;
+}
+
+.booking-modal__header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+// ── Status Badge — mirrors auth-card__tag pill ────────────────────────────────
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.25rem 0.85rem;
+  border-radius: 2px;
+  font-family: v.$font-body;
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+
+  &::before {
+    content: '';
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  &--confirmed {
+    color: #6fcf97;
+    border: 1px solid rgba(111, 207, 151, 0.25);
+    background: rgba(111, 207, 151, 0.08);
+    &::before { background: #6fcf97; box-shadow: 0 0 6px #6fcf97; }
+  }
+  &--pending {
+    color: v.$gold-light;
+    border: 1px solid rgba(v.$gold, 0.35);
+    background: v.$gold-dim;
+    &::before { background: v.$gold; box-shadow: 0 0 6px v.$gold; }
+  }
+  &--cancelled {
+    color: #e07070;
+    border: 1px solid rgba(200, 80, 80, 0.25);
+    background: rgba(200, 80, 80, 0.08);
+    &::before { background: #e07070; }
+  }
+  &--checked-in {
+    color: #7db8e8;
+    border: 1px solid rgba(125, 184, 232, 0.25);
+    background: rgba(125, 184, 232, 0.08);
+    &::before { background: #7db8e8; box-shadow: 0 0 6px #7db8e8; }
+  }
+}
+
+// Close button — mirrors sidebar__toggle
+.booking-modal__close {
+  width: 32px;
+  height: 32px;
+  border-radius: 2px;
+  border: 1px solid v.$border;
+  background: transparent;
+  color: v.$muted;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+
+  svg { width: 15px; height: 15px; }
+
+  &:hover {
+    color: v.$text;
+    border-color: rgba(v.$gold, 0.4);
+    background: v.$input-bg;
+  }
+}
+
+// ── Scrollable Body ───────────────────────────────────────────────────────────
+.booking-modal__body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(v.$gold, 0.18) transparent;
+
+  &::-webkit-scrollbar { width: 3px; }
+  &::-webkit-scrollbar-thumb { background: rgba(v.$gold, 0.2); border-radius: 3px; }
+
+  @include m.sm { padding: 18px; gap: 18px; }
+}
+
+// ── Section ───────────────────────────────────────────────────────────────────
+.bm-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+// Section label — identical style to form label + sidebar section label
+.bm-section__label {
+  font-family: v.$font-body;
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: v.$gold;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  &::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: v.$border;
+  }
+}
+
+// ── Card — mirrors auth-card surface ─────────────────────────────────────────
+.bm-card {
+  background: v.$input-bg;   // #1c1c1f — one step darker than surface
+  border: 1px solid v.$border;
+  border-radius: 3px;
+  padding: 18px 20px;
+
+  &--highlighted {
+    border-color: rgba(v.$gold, 0.22);
+    background: linear-gradient(135deg, rgba(v.$gold, 0.05) 0%, v.$input-bg 60%);
+  }
+}
+
+// ── Room Hero ─────────────────────────────────────────────────────────────────
+.bm-room-hero {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  &__icon {
+    width: 52px;
+    height: 52px;
+    border: 1px solid rgba(v.$gold, 0.35);
+    border-radius: 2px;
+    background: v.$gold-dim;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: v.$gold;
+
+    svg { width: 24px; height: 24px; }
+  }
+
+  &__info {
+    flex: 1;
+    min-width: 0;
+
+    .room-name {
+      font-family: v.$font-display;
+      font-size: 1.35rem;
+      font-weight: 300;
+      color: v.$text;
+      letter-spacing: 0.02em;
+    }
+
+    .room-type {
+      font-family: v.$font-body;
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: v.$muted;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-top: 3px;
+    }
+  }
+
+  &__number {
+    font-family: v.$font-display;
+    font-size: 2.8rem;
+    font-weight: 300;
+    color: v.$gold;
+    opacity: 0.35;
+    flex-shrink: 0;
+    letter-spacing: 0.04em;
+  }
+}
+
+// ── Grids ─────────────────────────────────────────────────────────────────────
+.bm-grid {
+  display: grid;
+  gap: 10px;
+
+  &--2 { grid-template-columns: 1fr 1fr; }
+  &--3 { grid-template-columns: 1fr 1fr 1fr; }
+  &--4 { grid-template-columns: repeat(4, 1fr); }
+
+  @include m.sm {
+    &--3, &--4 { grid-template-columns: 1fr 1fr; }
+  }
+}
+
+// ── Data Field ────────────────────────────────────────────────────────────────
+.bm-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  // Same as form-group label
+  &__label {
+    font-family: v.$font-body;
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: v.$muted;
+  }
+
+  &__value {
+    font-family: v.$font-body;
+    font-size: 0.88rem;
+    font-weight: 400;
+    color: v.$text;
+    letter-spacing: 0.02em;
+
+    &--gold   { color: v.$gold-light; font-weight: 500; }
+    &--muted  { color: v.$muted; font-weight: 300; }
+    &--large  {
+      font-family: v.$font-display;
+      font-size: 1.4rem;
+      font-weight: 300;
+    }
+  }
+}
+
+// ── Stay Duration Bar ─────────────────────────────────────────────────────────
+.bm-stay-bar {
+  display: flex;
+  background: v.$input-bg;
+  border: 1px solid v.$border;
+  border-radius: 3px;
+  overflow: hidden;
+
+  &__segment {
+    flex: 1;
+    padding: 14px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    &--mid {
+      flex: 0 0 auto;
+      padding: 14px 22px;
+      background: v.$gold-dim;
+      border-left: 1px solid rgba(v.$gold, 0.2);
+      border-right: 1px solid rgba(v.$gold, 0.2);
+      align-items: center;
+      text-align: center;
+    }
+  }
+
+  &__label {
+    font-family: v.$font-body;
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: v.$muted;
+  }
+
+  &__date {
+    font-family: v.$font-body;
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: v.$text;
+  }
+
+  &__nights {
+    font-family: v.$font-display;
+    font-size: 2rem;
+    font-weight: 300;
+    color: v.$gold;
+    line-height: 1;
+  }
+
+  &__nights-label {
+    font-family: v.$font-body;
+    font-size: 0.62rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: v.$gold;
+    opacity: 0.7;
+  }
+}
+
+// ── Amenity Pills — mirrors auth-card__tag style ──────────────────────────────
+.bm-amenities {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.bm-amenity {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.25rem 0.75rem;
+  border-radius: 2px;
+  background: v.$input-bg;
+  border: 1px solid v.$border;
+  font-family: v.$font-body;
+  font-size: 0.72rem;
+  font-weight: 400;
+  color: v.$muted;
+  letter-spacing: 0.04em;
+
+  svg { width: 12px; height: 12px; color: v.$gold; flex-shrink: 0; }
+}
+
+// ── Price Rows ────────────────────────────────────────────────────────────────
+.bm-price-rows {
+  display: flex;
+  flex-direction: column;
+}
+
+.bm-price-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid v.$border;
+
+  &:last-child { border-bottom: none; }
+
+  &--total {
+    padding-top: 14px;
+    margin-top: 4px;
+    border-top: 1px solid rgba(v.$gold, 0.2);
+    border-bottom: none;
+
+    .bm-price-row__label {
+      font-family: v.$font-body;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: v.$text;
+    }
+
+    .bm-price-row__value {
+      font-family: v.$font-display;
+      font-size: 1.6rem;
+      font-weight: 300;
+      color: v.$gold-light;
+    }
+  }
+
+  &__label {
+    font-family: v.$font-body;
+    font-size: 0.82rem;
+    font-weight: 300;
+    color: v.$muted;
+  }
+
+  &__value {
+    font-family: v.$font-body;
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: v.$text;
+  }
+}
+
+// ── Notes ─────────────────────────────────────────────────────────────────────
+.bm-notes {
+  font-family: v.$font-body;
+  font-size: 0.85rem;
+  font-weight: 300;
+  color: v.$muted;
+  line-height: 1.75;
+  letter-spacing: 0.02em;
+}
+
+// ── Footer ────────────────────────────────────────────────────────────────────
+.booking-modal__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 28px 20px;
+  border-top: 1px solid v.$border;
+  flex-shrink: 0;
+  gap: 12px;
+
+  @include m.sm {
+    padding: 14px 18px 18px;
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+}
+
+.booking-modal__footer-meta {
+  font-family: v.$font-body;
+  font-size: 0.72rem;
+  font-weight: 300;
+  color: v.$muted;
+  letter-spacing: 0.05em;
+}
+
+.bm-btn-group {
+  display: flex;
+  gap: 10px;
+
+  @include m.sm { width: 100%; }
+}
+
+// Button — mirrors btn-primary pattern but with variants
+.bm-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 18px;
+  height: 38px;
+  border-radius: 3px;       // matches btn-primary
+  font-family: v.$font-body;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border: none;
+  transition: background 0.2s, color 0.2s, border-color 0.2s, transform 0.15s;
+
+  svg { width: 14px; height: 14px; }
+
+  &:active { transform: translateY(0); }
+
+  &--ghost {
+    background: transparent;
+    border: 1px solid v.$border;
+    color: v.$muted;
+
+    &:hover {
+      border-color: rgba(v.$gold, 0.4);
+      color: v.$text;
+      transform: translateY(-1px);
+    }
+  }
+
+  &--danger {
+    background: rgba(200, 80, 80, 0.1);
+    border: 1px solid rgba(200, 80, 80, 0.22);
+    color: #e07070;
+
+    &:hover {
+      background: rgba(200, 80, 80, 0.18);
+      transform: translateY(-1px);
+    }
+  }
+
+  // Matches btn-primary exactly
+  &--primary {
+    background: v.$gold;
+    color: v.$bg;
+
+    &:hover {
+      background: v.$gold-light;
+      transform: translateY(-1px);
+    }
+  }
+
+  @include m.sm { flex: 1; justify-content: center; }
+}
+
+// ── Reduced Motion ────────────────────────────────────────────────────────────
+@media (prefers-reduced-motion: reduce) {
+  .booking-overlay { animation: none; }
+  .booking-modal   { animation: none; }
+  .bm-btn          { transition: none; }
+}

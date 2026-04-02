@@ -7,12 +7,12 @@ import useRoomFilters from './hooks/useRoomFilters';
 import useRoomModals from './hooks/useRoomModals';
 import RoomStatsGrid from './components/RoomStatsGrid';
 import RoomFilters from './components/RoomFilters';
-import AddNewRoomModal from './components/addNewRoomModal';
-import BookingModal from './components/BookingModal';
+import AddNewRoomModal from './components/modals/addNewRoomModal';
+import BookingModal from './components/modals/BookingModal';
 import RoomCard from './components/RoomCard';
 import { useEffect } from 'react';
 import Loader from '../../components/Loader/Loader';
-import ViewBookingModal from './components/ViewBookingModal';
+import ViewRoomBookingDetail from './components/modals/ViewBookingModal';
 
 
 const Rooms = () => {
@@ -76,7 +76,7 @@ const Rooms = () => {
       )}
 
       {showViewBookingModal && (
-        <ViewBookingModal room={bookingRoom} setShowViewBookingModal={setShowViewBookingModal} />
+        <ViewRoomBookingDetail room={bookingRoom} setShowViewBookingModal={setShowViewBookingModal} />
       )}
     </div>
   );

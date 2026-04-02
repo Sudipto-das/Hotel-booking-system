@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
-import styles from "../Rooms.module.scss";
-import bStyles from "./BookingModal.module.scss";
-import { Icon } from "./icons";
-import { Steps } from "./StepIndicator";
-import { GuestSearchDropdown } from "./GuestsSearchDropdown";
-import { useGuest } from "../../guest/hooks/useGuest";
-import { useAuth } from "../../auth/hooks/useAuth";
-import { useRoom } from "../hooks/useRoom";
-import Loader from "../../../components/Loader/Loader";
+import styles from "../../Rooms.module.scss";
+import bStyles from "../BookingModal.module.scss";
+import { Icon } from "../icons";
+import { Steps } from "../StepIndicator";
+import { GuestSearchDropdown } from "../GuestsSearchDropdown";
+import { useGuest } from "../../../guest/hooks/useGuest";
+import { useAuth } from "../../../auth/hooks/useAuth";
+import { useRoom } from "../../hooks/useRoom";
+import Loader from "../../../../components/Loader/Loader";
 
 // ── Main Modal ────────────────────────────────────────────
 const BookingModal = ({ room, setShowBookingModal }) => {

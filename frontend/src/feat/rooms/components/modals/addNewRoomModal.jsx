@@ -1,6 +1,6 @@
-import styles from '../Rooms.module.scss';
-import { roomTypes } from '../room';
-import { useRoom } from '../hooks/useRoom';
+import styles from '../../Rooms.module.scss';
+import { roomTypes } from '../../room';
+import { useRoom } from '../../hooks/useRoom';
 import { useState } from 'react';
 
 const AddRoomModal = ({ editingRoom, setShowModal }) => {
