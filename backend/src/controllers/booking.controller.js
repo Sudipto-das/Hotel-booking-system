@@ -9,6 +9,10 @@ const Room = require('../models/room.model.js')
 const createBookingController = async (req, res) => {
     try {
         const { checkOutDate, totalPrice, roomId, userId, clientId, roomStatus } = req.body;
+        const isAlreadyBooked = await Booking.findOne({ roomId, checkOutDate: { $gt: Date.now() } });
+        if (isAlreadyBooked) {
+            return res.status(400).json({ message: "Room is already booked for the selected dates" });
+        }
         const booking = new Booking({
             checkInDate: Date.now(), checkOutDate, totalPrice, roomId, userId, clientId
         });

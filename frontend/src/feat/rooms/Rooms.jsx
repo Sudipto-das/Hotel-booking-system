@@ -12,6 +12,7 @@ import BookingModal from './components/BookingModal';
 import RoomCard from './components/RoomCard';
 import { useEffect } from 'react';
 import Loader from '../../components/Loader/Loader';
+import ViewBookingModal from './components/ViewBookingModal';
 
 
 const Rooms = () => {
@@ -21,7 +22,7 @@ const Rooms = () => {
   const {
     editingRoom, showModal, setShowModal,
     bookingRoom, showBookingModal, setShowBookingModal,
-    openCreateModal, openEditModal, openBookingModal,
+    openCreateModal, openEditModal, openBookingModal,openViewBookingModal,setShowViewBookingModal,showViewBookingModal
   } = useRoomModals();
 
   
@@ -54,6 +55,7 @@ const Rooms = () => {
               room={room}
               onEdit={openEditModal}
               onBook={openBookingModal}
+              onViewBooking={openViewBookingModal}
             />
           ))}
         </div>
@@ -71,6 +73,10 @@ const Rooms = () => {
       )}
       {showBookingModal && (
         <BookingModal room={bookingRoom} setShowBookingModal={setShowBookingModal} />
+      )}
+
+      {showViewBookingModal && (
+        <ViewBookingModal room={bookingRoom} setShowViewBookingModal={setShowViewBookingModal} />
       )}
     </div>
   );

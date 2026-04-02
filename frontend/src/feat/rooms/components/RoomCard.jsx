@@ -1,7 +1,7 @@
-import { getImageUrl,getStatusClass } from '../../../utils/rooms.utils';
+import { getImageUrl, getStatusClass } from '../../../utils/rooms.utils';
 import styles from '../Rooms.module.scss';
 
-const RoomCard = ({ room, onEdit, onBook }) => (
+const RoomCard = ({ room, onEdit, onBook, onViewBooking }) => (
   <div className={styles.roomCard}>
     <div className={styles.roomImage}>
       <img src={getImageUrl(room.imageUrl)} alt={`Room ${room.roomNumber}`} />
@@ -31,7 +31,7 @@ const RoomCard = ({ room, onEdit, onBook }) => (
         )}
       </div>
       <div className={styles.roomActions}>
-        <button className={styles.viewButton} onClick={() => onBook(room)}>Book Now</button>
+        <button className={styles.viewButton} onClick={room.status == "occupied" ? onViewBooking : onBook}>{room.status == "occupied" ? "View Booking" : "Book Now"}</button>
         <button className={styles.editButton} onClick={() => onEdit(room)}>Edit</button>
       </div>
     </div>
