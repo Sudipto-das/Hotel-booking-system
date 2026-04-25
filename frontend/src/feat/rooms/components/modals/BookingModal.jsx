@@ -14,11 +14,12 @@ const BookingModal = ({ room, setShowBookingModal }) => {
 
   const { guests, fetchGuests, bookingLoading } = useGuest()
   const { user } = useAuth();
+
   const { handleBookingRoom } = useRoom()
 
   const [step, setStep] = useState(0);
   const [selectedGuest, setSelectedGuest] = useState(null);
-  const [dates, setDates] = useState({ checkIn: "", checkOut: "" });
+  const [dates, setDates] = useState({ checkOut: "" });
   const [specialRequests, setSpecialRequests] = useState("");
   const [addons, setAddons] = useState({ breakfast: false, parking: false, spa: false, airportPickup: false });
   const [paymentMethod, setPaymentMethod] = useState("online");
@@ -29,9 +30,16 @@ const BookingModal = ({ room, setShowBookingModal }) => {
 
   // ── derived ──────────────────────────────────────────────
   const nights = (() => {
-    if (!dates.checkIn || !dates.checkOut) return 0;
-    const diff = new Date(dates.checkOut) - new Date(dates.checkIn);
-    return Math.max(0, Math.round(diff / 86400000));
+    if (!dates.checkOut) return 0;
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const checkOut = new Date(dates.checkOut);
+    checkOut.setHours(0, 0, 0, 0);
+
+    const diff = checkOut - today;
+    return Math.max(0, Math.ceil(diff / 86400000));
   })();
 
   const baseRate = room?.pricePerNight ?? 280;
@@ -44,12 +52,15 @@ const BookingModal = ({ room, setShowBookingModal }) => {
   const taxes = Math.round(subtotal * 0.12);
   const total = subtotal + taxes + addonsTotal * nights;
 
-  const today = new Date().toISOString().split("T")[0];
+  const today = new Date();
+  today.setDate(today.getDate() + 1);
+
+  const minDate = today.toISOString().split("T")[0];
 
   // ── validation ───────────────────────────────────────────
   const canNext = [
     selectedGuest !== null,
-    dates.checkIn && dates.checkOut && nights > 0,
+    dates.checkOut && nights > 0,
     true, // details optional
     paymentMethod === "offline" ||
     (payment.name && payment.card.replace(/\s/g, "").length === 16 && payment.expiry && payment.cvv.length >= 3),
@@ -60,9 +71,9 @@ const BookingModal = ({ room, setShowBookingModal }) => {
       checkOutDate: dates.checkOut,
       totalPrice: total,
       roomId: room._id,
-      userId: user._id,
+      userId: user.user._id,
       clientId: selectedGuest._id,        // guest = client
-      roomStatus: "booked",
+      roomBookedUpto: dates.checkOut
     }
     const res = await handleBookingRoom(bookingData); // calls context → service → API
     if (res?.data) {
@@ -87,8 +98,8 @@ const BookingModal = ({ room, setShowBookingModal }) => {
     fetchGuests()
   }, [])
 
- 
-  {bookingLoading && <Loader label="Booking ..."/>}
+
+  { bookingLoading && <Loader label="Booking ..." /> }
   // ── success screen ───────────────────────────────────────
   if (booked) {
     return (
@@ -107,7 +118,7 @@ const BookingModal = ({ room, setShowBookingModal }) => {
               </div>
               <div className={bStyles.successRow}>
                 <span>Check-in</span>
-                <strong>{dates.checkIn}</strong>
+                <strong>{Date.now()}</strong>
               </div>
               <div className={bStyles.successRow}>
                 <span>Check-out</span>
@@ -178,13 +189,10 @@ const BookingModal = ({ room, setShowBookingModal }) => {
                 <span>Select your dates</span>
               </div>
               <div className={styles.formRow}>
-                <div className={styles.formGroup}>
-                  <label>Check-in</label>
-                  <input type="date" min={today} value={dates.checkIn} onChange={(e) => setDates((d) => ({ ...d, checkIn: e.target.value, checkOut: "" }))} />
-                </div>
+
                 <div className={styles.formGroup}>
                   <label>Check-out</label>
-                  <input type="date" min={dates.checkIn || today} value={dates.checkOut} onChange={(e) => setDates((d) => ({ ...d, checkOut: e.target.value }))} disabled={!dates.checkIn} />
+                  <input type="date" min={minDate} value={dates.checkOut} onChange={(e) => setDates((d) => ({ ...d, checkOut: e.target.value }))} />
                 </div>
               </div>
               {nights > 0 && (

@@ -1,12 +1,13 @@
 import { createContext, useEffect, useState } from 'react';
-import { getAllRooms, addRoom, updateRoom, deleteRoom } from '../services/room.services.js';
+import { getAllRooms, addRoom, updateRoom, deleteRoom,fetchBookingsByRoomId } from '../services/room.services.js';
 import { createBooking } from '../../bookings/services/booking.services.js';
 
 export const RoomContext = createContext();
 
 export const RoomProvider = ({ children }) => {
     const [rooms, setRooms] = useState([]);
-    const [bookingLoading,setBookingLoading] = useState(false)
+    const [bookings, setBookings] = useState([])
+    const [bookingLoading, setBookingLoading] = useState(false)
     const [loading, setLoading] = useState(false);
     const [bookingError, setBookingError] = useState(null)
 
@@ -47,7 +48,7 @@ export const RoomProvider = ({ children }) => {
         }
     }
     const fetchRooms = async (force = false) => {
-        if(rooms.length >0 && !force) return ;
+        if (rooms.length > 0 && !force) return;
         setLoading(true)
         try {
             const roomsData = await getAllRooms();
@@ -72,9 +73,29 @@ export const RoomProvider = ({ children }) => {
         }
     }
 
+    const getBookingsByRoomId = async (roomId) => {
+        setBookingError(null);
+        setBookingLoading(true)
+        try {
+            const result = await fetchBookingsByRoomId(roomId);
+            setBookings(result.data)
+        } catch (err) {
+            setBookingError(err)
+            console.log(err);
+        } finally {
+            setBookingLoading(false)
+        }
+    }
+
 
     return (
-        <RoomContext.Provider value={{ rooms, loading, setRooms, handleAddRoom, handleUpdateRoom, handleDeleteRoom, fetchRooms, handleBookingRoom, bookingError ,bookingLoading}}>
+        <RoomContext.Provider value={{
+            rooms, bookings, loading, setRooms,
+            handleAddRoom, handleUpdateRoom,
+            handleDeleteRoom, fetchRooms,
+            handleBookingRoom, bookingError,
+            bookingLoading, getBookingsByRoomId
+        }}>
             {children}
         </RoomContext.Provider>
     )

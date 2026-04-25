@@ -22,10 +22,10 @@ const Rooms = () => {
   const {
     editingRoom, showModal, setShowModal,
     bookingRoom, showBookingModal, setShowBookingModal,
-    openCreateModal, openEditModal, openBookingModal,openViewBookingModal,setShowViewBookingModal,showViewBookingModal
+    openCreateModal, openEditModal, openBookingModal,openViewBookingModal,showViewBookingModal,setShowViewBookingModal
   } = useRoomModals();
 
-  
+
 
   const stats = computeStats(rooms);
 
@@ -55,7 +55,7 @@ const Rooms = () => {
               room={room}
               onEdit={openEditModal}
               onBook={openBookingModal}
-              onViewBooking={openViewBookingModal}
+              onView={openViewBookingModal}
             />
           ))}
         </div>

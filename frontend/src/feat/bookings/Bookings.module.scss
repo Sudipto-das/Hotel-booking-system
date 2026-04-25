@@ -1,0 +1,527 @@
+@use '../../styles/__variables' as v;
+@use '../../styles/__mixins' as m;
+
+// ── Page ──────────────────────────────────────────────────────────────────────
+.bookingsPage {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
+  animation: fadeUp 0.4s ease both;
+
+  @include m.sm { padding: 1rem; }
+}
+
+// ── Header ────────────────────────────────────────────────────────────────────
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+
+  @include m.sm { flex-direction: column; align-items: flex-start; margin-bottom: 1.5rem; }
+}
+
+.headerLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+
+  h1 {
+    font-family: v.$font-display;
+    font-size: 2.8rem;
+    font-weight: 300;
+    color: v.$text;
+    margin: 0 0 0.25rem;
+    letter-spacing: 0.02em;
+    line-height: 1;
+
+    @include m.sm { font-size: 1.75rem; }
+  }
+}
+
+.headerTag {
+  font-size: 0.65rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: v.$gold;
+  font-weight: 500;
+  margin-bottom: 0.6rem;
+}
+
+.headerSubtitle {
+  color: v.$muted;
+  font-size: 0.85rem;
+  font-weight: 300;
+  margin-top: 0.35rem;
+}
+
+.headerActions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+
+  @include m.sm { width: 100%; }
+}
+
+// ── Stats Grid ────────────────────────────────────────────────────────────────
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+
+  @include m.md { grid-template-columns: repeat(2, 1fr); }
+  @include m.sm { grid-template-columns: 1fr; gap: 0.75rem; margin-bottom: 1.5rem; }
+}
+
+.statCard {
+  background: v.$surface;
+  border: 1px solid v.$border;
+  border-radius: 4px;
+  padding: 1.25rem 1.5rem;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.2s;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, v.$gold, transparent);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  &:hover {
+    border-color: rgba(v.$gold, 0.3);
+    &::before { opacity: 0.4; }
+  }
+}
+
+.statValue {
+  font-family: v.$font-display;
+  font-size: 2.2rem;
+  font-weight: 300;
+  color: v.$text;
+  line-height: 1;
+  margin-bottom: 0.35rem;
+}
+
+.statLabel {
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: v.$muted;
+  font-weight: 500;
+}
+
+.statAccent {
+  font-size: 0.72rem;
+  color: v.$gold;
+  margin-top: 0.5rem;
+  font-weight: 400;
+}
+
+// ── Toolbar ───────────────────────────────────────────────────────────────────
+.toolbar {
+  background: v.$surface;
+  border: 1px solid v.$border;
+  border-radius: 4px;
+  padding: 1rem 1.25rem;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 1.25rem;
+
+  @include m.sm { flex-direction: column; align-items: stretch; }
+}
+
+.searchBox {
+  flex: 1;
+  min-width: 220px;
+  position: relative;
+
+  @include m.sm { min-width: 100%; }
+
+  svg {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    stroke: v.$muted;
+    pointer-events: none;
+  }
+
+  input {
+    width: 100%;
+    padding: 0.65rem 1rem 0.65rem 2.5rem;
+    background: v.$input-bg;
+    border: 1px solid v.$border;
+    border-radius: 3px;
+    color: v.$text;
+    font-family: v.$font-body;
+    font-size: 0.88rem;
+    font-weight: 300;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+
+    &::placeholder { color: v.$muted; }
+
+    &:focus {
+      border-color: rgba(v.$gold, 0.6);
+      box-shadow: 0 0 0 3px rgba(v.$gold, 0.08);
+    }
+  }
+}
+
+.filterGroup {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+
+  @include m.sm { width: 100%; }
+}
+
+.filterBtn {
+  background: transparent;
+  border: 1px solid v.$border;
+  border-radius: 2px;
+  padding: 0.4rem 0.9rem;
+  color: v.$muted;
+  font-family: v.$font-body;
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+
+  &:hover {
+    border-color: rgba(v.$gold, 0.4);
+    color: v.$text;
+  }
+
+  &Active {
+    background: v.$gold-dim;
+    border-color: v.$gold;
+    color: v.$gold;
+  }
+}
+
+.filterSelect {
+  padding: 0.5rem 2rem 0.5rem 0.85rem;
+  background: v.$input-bg;
+  border: 1px solid v.$border;
+  border-radius: 3px;
+  color: v.$text;
+  font-family: v.$font-body;
+  font-size: 0.82rem;
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236e6e78' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.6rem center;
+  transition: border-color 0.2s;
+
+  &:focus { border-color: rgba(v.$gold, 0.6); }
+
+  option { background: v.$surface; color: v.$text; }
+}
+
+// ── Table ─────────────────────────────────────────────────────────────────────
+.tableWrapper {
+  background: v.$surface;
+  border: 1px solid v.$border;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.tableScroll {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tableHeadRow {
+  border-bottom: 1px solid v.$border;
+}
+
+.tableTh {
+  padding: 0.85rem 1.25rem;
+  text-align: left;
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: v.$muted;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.tableRow {
+  border-bottom: 1px solid v.$border;
+  cursor: pointer;
+  transition: background 0.15s;
+
+  &:last-child { border-bottom: none; }
+  &:hover { background: rgba(v.$gold, 0.04); }
+}
+
+.tableTd {
+  padding: 1rem 1.25rem;
+  color: v.$muted;
+  font-size: 0.84rem;
+  vertical-align: middle;
+}
+
+.tableEmpty {
+  padding: 3rem;
+  text-align: center;
+  color: v.$muted;
+  font-size: 0.9rem;
+}
+
+.tableFooter {
+  padding: 0.85rem 1.5rem;
+  border-top: 1px solid v.$border;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  @include m.sm { flex-direction: column; gap: 0.5rem; align-items: flex-start; }
+}
+
+.tableFooterText {
+  font-size: 0.72rem;
+  color: v.$muted;
+}
+
+// ── Table cell content ────────────────────────────────────────────────────────
+.bookingId {
+  font-family: v.$font-body;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  color: v.$gold;
+  font-weight: 500;
+}
+
+.guestName {
+  font-family: v.$font-display;
+  font-size: 1.05rem;
+  color: v.$text;
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.guestPhone {
+  font-size: 0.75rem;
+  color: v.$muted;
+  margin-top: 2px;
+}
+
+.roomInfo {
+  font-size: 0.85rem;
+  color: v.$text;
+  font-weight: 500;
+}
+
+.roomType {
+  font-size: 0.72rem;
+  color: v.$muted;
+  margin-top: 2px;
+}
+
+.dateRange {
+  font-size: 0.82rem;
+  color: v.$muted;
+}
+
+.dateArrow {
+  margin: 0 0.4rem;
+  color: v.$border;
+}
+
+.nights {
+  font-size: 0.7rem;
+  color: v.$muted;
+  margin-top: 2px;
+}
+
+.amount {
+  font-family: v.$font-display;
+  font-size: 1.1rem;
+  font-weight: 300;
+  color: v.$text;
+}
+
+// ── Status Badge ──────────────────────────────────────────────────────────────
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.22rem 0.65rem;
+  border-radius: 2px;
+  white-space: nowrap;
+  border: 1px solid transparent;
+
+  &::before {
+    content: '';
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  &Confirmed {
+    color: #6fcf97;
+    background: rgba(111, 207, 151, 0.08);
+    border-color: rgba(111, 207, 151, 0.22);
+    &::before { background: #6fcf97; }
+  }
+
+  &Pending {
+    color: v.$gold-light;
+    background: v.$gold-dim;
+    border-color: rgba(v.$gold, 0.3);
+    &::before { background: v.$gold; }
+  }
+
+  &CheckedIn {
+    color: #7db8e8;
+    background: rgba(125, 184, 232, 0.08);
+    border-color: rgba(125, 184, 232, 0.22);
+    &::before { background: #7db8e8; }
+  }
+
+  &CheckedOut {
+    color: v.$muted;
+    background: rgba(110, 110, 120, 0.1);
+    border-color: rgba(110, 110, 120, 0.22);
+    &::before { background: v.$muted; }
+  }
+
+  &Cancelled {
+    color: #e07070;
+    background: rgba(200, 80, 80, 0.08);
+    border-color: rgba(200, 80, 80, 0.22);
+    &::before { background: #e07070; }
+  }
+}
+
+// ── Payment Badge ─────────────────────────────────────────────────────────────
+.payBadge {
+  font-size: 0.68rem;
+  color: v.$muted;
+  font-weight: 400;
+}
+
+.payPaid { color: #6fcf97; }
+.payPending { color: v.$gold; }
+
+// ── Buttons ───────────────────────────────────────────────────────────────────
+.btnPrimary {
+  background: v.$gold;
+  color: v.$bg;
+  border: none;
+  border-radius: 3px;
+  padding: 0.75rem 1.5rem;
+  font-family: v.$font-body;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+
+  &:hover { background: v.$gold-light; transform: translateY(-1px); }
+  &:active { transform: translateY(0); }
+
+  @include m.sm { width: 100%; justify-content: center; }
+}
+
+.btnGhost {
+  background: transparent;
+  border: 1px solid v.$border;
+  border-radius: 3px;
+  color: v.$muted;
+  font-family: v.$font-body;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 0.65rem 1rem;
+  transition: border-color 0.2s, color 0.2s;
+  white-space: nowrap;
+
+  &:hover { border-color: v.$muted; color: v.$text; }
+}
+
+.actionBtn {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid v.$border;
+  border-radius: 3px;
+  color: v.$muted;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+
+  svg { width: 14px; height: 14px; }
+
+  &:hover { border-color: v.$gold; color: v.$gold; }
+}
+
+.actionsCell {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+// ── Pagination ────────────────────────────────────────────────────────────────
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.pageBtn {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid v.$border;
+  border-radius: 3px;
+  color: v.$muted;
+  font-family: v.$font-body;
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+
+  &:hover { border-color: rgba(v.$gold, 0.4); color: v.$text; }
+  &Active { background: v.$gold-dim; border-color: v.$gold; color: v.$gold; }
+  &Disabled { opacity: 0.35; pointer-events: none; }
+
+  svg { width: 12px; height: 12px; }
+}

@@ -94,5 +94,15 @@ const deleteRoom = async(roomId)=>{
 }
 
 
+const fetchBookingsByRoomId = async(roomId)=>{
+    try{
+        const response = await api.get(`/bookings/${roomId}`);
+        return response.data;
+    } catch(error){
+        console.error("Error fetching bookings:", error);
+        throw error;
+    }
+}
 
-export {getAllRooms,addRoom,updateRoom,deleteRoom};
+
+export {getAllRooms,addRoom,updateRoom,deleteRoom,fetchBookingsByRoomId};

@@ -9,6 +9,6 @@ roomRouter.post("/create",authMiddleware,upload.single("image"),roomController.c
 roomRouter.get("/all",authMiddleware,roomController.getAllRoomsController);
 roomRouter.put("/update/:id",authMiddleware,upload.single("image"),roomController.updateRoomController);
 roomRouter.delete("/delete/:id",authMiddleware,roomController.deleteRoomController);
-
+roomRouter.get("/bookings/:id",authMiddleware,roomController.getBookingByRoomIdController);
 
 module.exports = roomRouter;

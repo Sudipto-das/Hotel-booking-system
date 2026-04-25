@@ -1,5 +1,5 @@
 const Room = require("../models/room.model.js")
-
+const Booking = require("../models/booking.model.js");
 
 const createRoomController = async (req,res)=>{
     try{
@@ -107,5 +107,15 @@ const deleteRoomController = async(req,res)=>{
         res.status(500).json({message:"Error deleting room",error:err.message})
     }
 }
+const getBookingByRoomIdController = async (req,res)=>
+{
+    try{
+        const {id} = req.params;
+        const data = await Booking.find({roomId:id}).populate('roomId').populate('userId').populate('clientId');
+        res.status(200).json({message:"Booking retrieved successfully",data});
+    }catch(err){
+        res.status(500).send({message:err.message || "Some error occurred while retrieving Booking."});
+    }
+}
 
-module.exports = {createRoomController,getAllRoomsController,updateRoomController,deleteRoomController}
+module.exports = {createRoomController,getAllRoomsController,updateRoomController,deleteRoomController,getBookingByRoomIdController}

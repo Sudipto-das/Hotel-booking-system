@@ -1,90 +1,91 @@
 import { useEffect } from "react";
 import styles from "./../ViewBooking.module.scss";
+import { useRoom } from "../../hooks/useRoom";
 
 // ── Icons ─────────────────────────────────────────────────────────────────────
 const Icon = {
   close: (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
     </svg>
   ),
   bed: (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M2 9V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v4"/>
-      <path d="M2 13v6h20v-6"/><path d="M2 13h20"/>
-      <path d="M6 13v-3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v3"/>
+      <path d="M2 9V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v4" />
+      <path d="M2 13v6h20v-6" /><path d="M2 13h20" />
+      <path d="M6 13v-3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v3" />
     </svg>
   ),
   wifi: (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/>
-      <path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/>
+      <path d="M5 12.55a11 11 0 0 1 14.08 0" /><path d="M1.42 9a16 16 0 0 1 21.16 0" />
+      <path d="M8.53 16.11a6 6 0 0 1 6.95 0" /><line x1="12" y1="20" x2="12.01" y2="20" />
     </svg>
   ),
   tv: (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-      <rect x="2" y="7" width="20" height="15" rx="2"/><polyline points="17 2 12 7 7 2"/>
+      <rect x="2" y="7" width="20" height="15" rx="2" /><polyline points="17 2 12 7 7 2" />
     </svg>
   ),
   coffee: (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/>
-      <line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/>
+      <path d="M18 8h1a4 4 0 0 1 0 8h-1" /><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z" />
+      <line x1="6" y1="1" x2="6" y2="4" /><line x1="10" y1="1" x2="10" y2="4" /><line x1="14" y1="1" x2="14" y2="4" />
     </svg>
   ),
   bath: (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M9 6 6.5 3.5a1.5 1.5 0 0 0-1-.5C4.683 3 4 3.683 4 4.5V17a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5"/>
-      <line x1="10" y1="5" x2="8" y2="7"/><path d="M2 12h20"/>
+      <path d="M9 6 6.5 3.5a1.5 1.5 0 0 0-1-.5C4.683 3 4 3.683 4 4.5V17a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5" />
+      <line x1="10" y1="5" x2="8" y2="7" /><path d="M2 12h20" />
     </svg>
   ),
   ac: (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-      <rect x="2" y="3" width="20" height="5" rx="1"/>
-      <path d="M8 24V6"/><path d="M16 24V6"/><path d="M12 6v18"/><path d="M20 10 12 6 4 10"/>
+      <rect x="2" y="3" width="20" height="5" rx="1" />
+      <path d="M8 24V6" /><path d="M16 24V6" /><path d="M12 6v18" /><path d="M20 10 12 6 4 10" />
     </svg>
   ),
   minibar: (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-      <line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/>
-      <line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/>
-      <line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>
+      <line x1="8" y1="6" x2="21" y2="6" /><line x1="8" y1="12" x2="21" y2="12" />
+      <line x1="8" y1="18" x2="21" y2="18" /><line x1="3" y1="6" x2="3.01" y2="6" />
+      <line x1="3" y1="12" x2="3.01" y2="12" /><line x1="3" y1="18" x2="3.01" y2="18" />
     </svg>
   ),
   edit: (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-      <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+      <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+      <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
     </svg>
   ),
   cancel: (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="12" cy="12" r="10"/>
-      <line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>
+      <circle cx="12" cy="12" r="10" />
+      <line x1="15" y1="9" x2="9" y2="15" /><line x1="9" y1="9" x2="15" y2="15" />
     </svg>
   ),
   print: (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-      <polyline points="6 9 6 2 18 2 18 9"/>
-      <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
-      <rect x="6" y="14" width="12" height="8"/>
+      <polyline points="6 9 6 2 18 2 18 9" />
+      <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+      <rect x="6" y="14" width="12" height="8" />
     </svg>
   ),
 };
 
 const AMENITY_ICONS = {
-  "Free Wi-Fi":       Icon.wifi,
-  "Smart TV":         Icon.tv,
-  "Coffee Maker":     Icon.coffee,
-  "Jacuzzi Bath":     Icon.bath,
+  "Free Wi-Fi": Icon.wifi,
+  "Smart TV": Icon.tv,
+  "Coffee Maker": Icon.coffee,
+  "Jacuzzi Bath": Icon.bath,
   "Air Conditioning": Icon.ac,
-  "Mini Bar":         Icon.minibar,
+  "Mini Bar": Icon.minibar,
 };
 
 const STATUS_MAP = {
-  confirmed:    { label: "Confirmed",  cls: "status-badge--confirmed"  },
-  pending:      { label: "Pending",    cls: "status-badge--pending"    },
-  cancelled:    { label: "Cancelled", cls: "status-badge--cancelled"  },
+  confirmed: { label: "Confirmed", cls: "status-badge--confirmed" },
+  pending: { label: "Pending", cls: "status-badge--pending" },
+  cancelled: { label: "Cancelled", cls: "status-badge--cancelled" },
   "checked-in": { label: "Checked In", cls: "status-badge--checked-in" },
 };
 
@@ -100,31 +101,28 @@ const fmtDate = (d) =>
 const fmtCurrency = (n) =>
   `$${Number(n).toLocaleString("en-US", { minimumFractionDigits: 2 })}`;
 
-// ── Component ─────────────────────────────────────────────────────────────────
-/**
- * ViewRoomBookingDetail
- *
- * Props:
- *   room                    {object}    – room data from the rooms list
- *   setShowViewBookingModal {function}  – close handler (sets modal visibility to false)
- */
 export default function ViewRoomBookingDetail({ room, setShowViewBookingModal }) {
+
+  const { getBookingsByRoomId, bookings, bookingLoading, bookingError } = useRoom();
+  console.log(bookings)
+
   // Use dummy data for now
   const booking = DEMO_BOOKING;
 
   const onClose = () => setShowViewBookingModal(false);
 
-  // Escape key close
-  useEffect(() => {
-    const handler = (e) => { if (e.key === "Escape") onClose(); };
-    document.addEventListener("keydown", handler);
-    return () => document.removeEventListener("keydown", handler);
-  }, []);
 
   if (!booking) return null;
 
   const nights = nightsBetween(booking.checkIn, booking.checkOut);
   const status = STATUS_MAP[booking.status] ?? { label: booking.status, cls: "" };
+
+
+  useEffect(() => {
+    if (room?._id && bookings.length === 0) { // Only fetch if not already loaded
+      getBookingsByRoomId(room._id);
+    }
+  }, [room?._id, bookings.length]);
 
   return (
     <div
