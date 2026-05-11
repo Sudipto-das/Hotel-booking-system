@@ -1,0 +1,573 @@
+@use '../../styles/__variables' as v;
+@use '../../styles/__mixins' as m;
+
+// ── Page ──────────────────────────────────────────────────────────────────────
+
+.page {
+  padding: 1.5rem 0.5rem;
+  animation: fadeUp 0.4s ease both;
+}
+
+// ── Header ────────────────────────────────────────────────────────────────────
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+
+  @include m.sm {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 1.75rem;
+  }
+}
+
+.header__meta {
+  display: flex;
+  flex-direction: column;
+}
+
+.header__tag {
+  font-size: 0.65rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: v.$gold;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.header__title {
+  font-family: v.$font-display;
+  font-weight: 300;
+  font-size: 2.8rem;
+  color: v.$text;
+  line-height: 1;
+  margin: 0;
+
+  @include m.sm {
+    font-size: 1.9rem;
+  }
+}
+
+.header__subtitle {
+  color: v.$muted;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+  font-weight: 300;
+}
+
+.date-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: v.$surface;
+  border: 1px solid v.$border;
+  border-radius: 3px;
+  color: v.$muted;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+
+  svg {
+    flex-shrink: 0;
+  }
+}
+
+// ── KPI Cards ─────────────────────────────────────────────────────────────────
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+
+  @include m.lg {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @include m.md {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include m.sm {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+}
+
+.kpi-card {
+  background: v.$surface;
+  border: 1px solid v.$border;
+  border-radius: 4px;
+  padding: 1.5rem;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.2s, transform 0.2s;
+  cursor: default;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, v.$gold, transparent);
+    opacity: 0.45;
+  }
+
+  &:hover {
+    border-color: rgba(v.$gold, 0.35);
+    transform: translateY(-2px);
+  }
+}
+
+.kpi-card__icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 3px;
+  background: rgba(v.$gold, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  color: v.$gold;
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.kpi-card__value {
+  font-family: v.$font-display;
+  font-size: 2.2rem;
+  font-weight: 300;
+  color: v.$text;
+  line-height: 1;
+  margin-bottom: 0.25rem;
+}
+
+.kpi-card__label {
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: v.$muted;
+  font-weight: 500;
+}
+
+.kpi-card__delta {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-top: 0.6rem;
+  font-size: 0.72rem;
+  font-weight: 500;
+
+  svg {
+    width: 10px;
+    height: 10px;
+  }
+
+  &--up   { color: #6fcf97; }
+  &--down { color: #e07070; }
+  &--muted { color: v.$muted; }
+}
+
+// ── Layout Grids ──────────────────────────────────────────────────────────────
+
+.grid--chart-occ {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1.25rem;
+  margin-bottom: 1.25rem;
+
+  @include m.md {
+    grid-template-columns: 1fr;
+  }
+}
+
+.grid--bookings-activity {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: 1.25rem;
+  margin-bottom: 1.25rem;
+
+  @include m.md {
+    grid-template-columns: 1fr;
+  }
+}
+
+.quick-stats {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+
+  @include m.lg {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @include m.md {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include m.sm {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+}
+
+// ── Card ──────────────────────────────────────────────────────────────────────
+
+.card {
+  background: v.$surface;
+  border: 1px solid v.$border;
+  border-radius: 4px;
+  padding: 1.5rem;
+
+  @include m.sm {
+    padding: 1.25rem;
+  }
+}
+
+.card__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 1.5rem;
+  gap: 1rem;
+
+  @include m.sm {
+    margin-bottom: 1.25rem;
+  }
+}
+
+.card__title {
+  font-family: v.$font-display;
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: v.$text;
+  margin: 0;
+  letter-spacing: 0.02em;
+}
+
+.card__sub {
+  font-size: 0.68rem;
+  color: v.$muted;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.card__link {
+  font-size: 0.7rem;
+  color: v.$gold;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+  transition: color 0.2s;
+  white-space: nowrap;
+
+  &:hover {
+    color: v.$gold-light;
+  }
+}
+
+// ── Chart Legend ──────────────────────────────────────────────────────────────
+
+.chart-legend {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.chart-legend__item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.7rem;
+  color: v.$muted;
+}
+
+.chart-legend__dot {
+  width: 10px;
+  height: 3px;
+  border-radius: 2px;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+// ── Revenue Chart Canvas ──────────────────────────────────────────────────────
+
+.chart-wrap {
+  position: relative;
+  width: 100%;
+  height: 220px;
+}
+
+// ── Occupancy Donut ───────────────────────────────────────────────────────────
+
+.donut-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+.donut-label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.donut-label__pct {
+  font-family: v.$font-display;
+  font-size: 1.6rem;
+  font-weight: 300;
+  color: v.$text;
+  line-height: 1;
+}
+
+.donut-label__text {
+  font-size: 0.6rem;
+  color: v.$muted;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+// ── Room Type Bars ────────────────────────────────────────────────────────────
+
+.room-bar {
+  margin-bottom: 1.1rem;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.room-bar__head {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.4rem;
+  align-items: baseline;
+}
+
+.room-bar__name {
+  font-size: 0.8rem;
+  color: v.$text;
+}
+
+.room-bar__meta {
+  font-size: 0.72rem;
+  color: v.$muted;
+
+  span {
+    font-weight: 500;
+  }
+}
+
+.room-bar__track {
+  height: 4px;
+  background: v.$border;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.room-bar__fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.8s ease;
+}
+
+// ── Bookings Table ────────────────────────────────────────────────────────────
+
+.bookings-scroll {
+  overflow-x: auto;
+}
+
+.bookings-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+}
+
+.bookings-table__th {
+  padding: 0 0.75rem 0.75rem 0;
+  text-align: left;
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: v.$muted;
+  font-weight: 500;
+  white-space: nowrap;
+  border-bottom: 1px solid v.$border;
+}
+
+.bookings-table__row {
+  border-bottom: 1px solid v.$border;
+  cursor: pointer;
+  transition: background 0.15s;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    background: rgba(v.$gold, 0.04);
+  }
+}
+
+.bookings-table__td {
+  padding: 0.85rem 0.75rem 0.85rem 0;
+  white-space: nowrap;
+  color: v.$muted;
+
+  &--id      { color: v.$muted; font-size: 0.78rem; }
+  &--name    { color: v.$text; font-weight: 400; }
+  &--amount  { color: v.$gold-light; font-weight: 500; }
+}
+
+// ── Status Badge ──────────────────────────────────────────────────────────────
+
+.badge {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 2px;
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  border: 1px solid transparent;
+
+  &--confirmed {
+    background: rgba(v.$gold, 0.12);
+    color: v.$gold-light;
+    border-color: rgba(v.$gold, 0.3);
+  }
+
+  &--checked-in {
+    background: rgba(76, 175, 130, 0.1);
+    color: #6fcf97;
+    border-color: rgba(76, 175, 130, 0.25);
+  }
+
+  &--checked-out {
+    background: rgba(110, 110, 120, 0.1);
+    color: v.$muted;
+    border-color: rgba(110, 110, 120, 0.25);
+  }
+}
+
+// ── Activity Feed ─────────────────────────────────────────────────────────────
+
+.live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #6fcf97;
+  display: inline-block;
+  box-shadow: 0 0 6px #6fcf97;
+  animation: pulse-live 2s ease-in-out infinite;
+}
+
+@keyframes pulse-live {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.45; }
+}
+
+.activity-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.activity-item {
+  display: flex;
+  gap: 0.85rem;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid v.$border;
+  align-items: flex-start;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.activity-item__icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  flex-shrink: 0;
+  font-weight: 600;
+}
+
+.activity-item__body {
+  flex: 1;
+  min-width: 0;
+}
+
+.activity-item__text {
+  margin: 0;
+  font-size: 0.8rem;
+  color: v.$text;
+  line-height: 1.4;
+}
+
+.activity-item__time {
+  font-size: 0.68rem;
+  color: v.$muted;
+  margin-top: 0.2rem;
+  display: block;
+}
+
+// ── Quick Stat Cards ──────────────────────────────────────────────────────────
+
+.quick-stat {
+  background: v.$input-bg;
+  border: 1px solid v.$border;
+  border-radius: 3px;
+  padding: 1.1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  transition: border-color 0.2s;
+
+  &:hover {
+    border-color: rgba(v.$gold, 0.25);
+  }
+}
+
+.quick-stat__icon {
+  font-size: 1rem;
+  opacity: 0.65;
+  flex-shrink: 0;
+}
+
+.quick-stat__value {
+  font-family: v.$font-display;
+  font-size: 1.3rem;
+  font-weight: 300;
+  color: v.$text;
+  line-height: 1;
+}
+
+.quick-stat__label {
+  font-size: 0.62rem;
+  color: v.$muted;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-top: 0.2rem;
+}
